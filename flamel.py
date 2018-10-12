@@ -6,7 +6,7 @@ import argparse
 def get_available_estimators():
     # Todo: Implement this
 
-    return ['ti']
+    return ['ti', 'mbar']
 
 
 def load_plugin(type, name, *args):
