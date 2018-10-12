@@ -48,8 +48,10 @@ def main():
             estimator_plugin.set_uks(parser.get_uks())
         df, ddf = estimator_plugin.estimate()
 
-        print(df.values[0, -1])
-        print(ddf.values[0, -1])
+        k_b = 8.3144621E-3
+        beta = 1.0 / args.t / k_b
+        print(df.values[0, -1] / beta)
+        print(ddf.values[0, -1] / beta)
 
     # Todo: Implement output
 

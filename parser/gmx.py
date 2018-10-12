@@ -2,6 +2,7 @@ import os
 import alchemlyb.parsing.gmx
 import alchemlyb.preprocessing
 import pandas
+import numpy as np
 
 
 # Todo: Use an interface here...
@@ -34,21 +35,26 @@ class Gmx:
     def get_dhdls(self):
         files = self.get_files()
         dhdls_ = []
+        l_values_ = []
 
         for fname in files:
             print('Read %s' % fname)
+            dhdl_ = alchemlyb.parsing.gmx.extract_dHdl(fname, self.T)
+            dhdls_.append(dhdl_)
+            l_values_.append(list(dhdl_.xs(0, level=0).index.values[0]))
 
-            dhdl = alchemlyb.parsing.gmx.extract_dHdl(fname, self.T)
+        dl = np.gradient(np.array(l_values_))[0]
 
-            ls = dhdl.columns
-            dhdl_ = dhdl.copy()
-            for l in ls:
-                # Todo: move preparations outside the parser...
-                dhdl_.loc[:, l] = alchemlyb.preprocessing.statistical_inefficiency(dhdl.loc[:, l], dhdl.loc[:, l],
-                                                                                   conservative=False)
+        uncorrelated_dhdls = []
+        for dhdl_, l in zip(dhdls_, dl):
+            ind = np.array(l, dtype=bool)
+            ind = np.array(ind, dtype=int)
+            dhdl_sum = dhdl_.dot(ind)
+            uncorrelated_dhdls.append(alchemlyb.preprocessing.statistical_inefficiency(dhdl_, dhdl_sum, conservative=False))
+
+        return pandas.concat(uncorrelated_dhdls)
             dhdls_.append(dhdl_)
 
-        return pandas.concat(dhdls_)
 
 
 def get_plugin(*args):
