@@ -4,6 +4,7 @@ import alchemlyb.preprocessing
 
 # Todo: Use an interface here...
 class Mbar:
+    name = 'MBAR'
     needs_dhdls = False
     needs_uks = True
 

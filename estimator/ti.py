@@ -3,6 +3,7 @@ import alchemlyb.estimators
 
 # Todo: Use an interface here...
 class Ti:
+    name = 'TI'
     needs_dhdls = True
     needs_uks = False
 
