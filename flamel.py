@@ -57,9 +57,9 @@ def main():
     outputs = load_plugins('output', argsplit(args.output))
     estimators = load_plugins('estimator', argsplit(args.estimators))
 
-    # Step 0: Check what data the selected estimators need
-    do_dhdl = False
-    do_uks = False
+    # Step 0: Check what data the uncorrelator and the selected estimators need
+    do_dhdl = uncorrelator.needs_dhdls
+    do_uks = uncorrelator.needs_uks
     for estimator in estimators:
         if estimator.needs_dhdls:
             do_dhdl = True
