@@ -3,16 +3,40 @@
 import argparse
 
 
-def get_available_estimators():
+def get_available_plugins(type):
     # Todo: Implement this
 
-    return ['ti', 'mbar']
+    if type == 'estimator':
+        return ['ti', 'mbar']
+    return ['simple', 'alchemical_analysis']
 
 
 def load_plugin(type, name, *args):
     # Todo: think about a suitable plugin system
     mod = __import__("%s.%s" % (type, name), fromlist=['object'])
     return mod.get_plugin(*args)
+
+
+def argsplit(arg):
+    return [] if arg is None else arg.split(',')
+
+
+def load_plugins(type, selected):
+    available = get_available_plugins(type)
+    plugin_names = []
+    if selected:
+        for plugin_name in selected:
+            if plugin_name in available:
+                plugin_names.append(plugin_name)
+
+    else:
+        plugin_names = available
+
+    plugins = []
+    for plugin_name in plugin_names:
+        plugins.append(load_plugin(type, plugin_name))
+
+    return plugins
 
 
 def main():
@@ -23,37 +47,61 @@ def main():
     parser.add_argument('-p', dest='pre', type=str, default='', help="File prefix")
     parser.add_argument('-s', dest='suffix', type=str, default='.xvg', help="File suffix")
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
+    parser.add_argument('-u', dest='uncorrelator', type=str, default='statistical_ineffiency_dhdl', help="Data uncorrelation method")
+    parser.add_argument('-o', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-parser', dest='parser', type=str, default='gmx', help="Parser")
     args = parser.parse_args()
 
-    # Todo: Use parser interface
     parser = load_plugin('parser', args.parser, args.t, args.pre, args.suffix)
+    uncorrelator = load_plugin('uncorrelate', args.uncorrelator)
+    outputs = load_plugins('output', argsplit(args.output))
+    estimators = load_plugins('estimator', argsplit(args.estimators))
 
-    estimators = []
-    available_estimators = get_available_estimators()
-    if args.estimators is not None:
-        for estimator in args.estimators.split(','):
-            if estimator in available_estimators:
-                estimators.append(estimator)
-
-    else:
-        estimators = available_estimators
-
-    # Todo: Use estimator interface
+    # Step 0: Check what data the selected estimators need
+    do_dhdl = False
+    do_uks = False
     for estimator in estimators:
-        estimator_plugin = load_plugin('estimator', estimator)
-        if estimator_plugin.needs_dhdls:
-            estimator_plugin.set_dhdls(parser.get_dhdls())
-        if estimator_plugin.needs_uks:
-            estimator_plugin.set_uks(parser.get_uks())
-        df, ddf = estimator_plugin.estimate()
+        if estimator.needs_dhdls:
+            do_dhdl = True
+        if estimator.needs_uks:
+            do_uks = True
 
-        k_b = 8.3144621E-3
-        beta = 1.0 / args.t / k_b
-        print(df.values[0, -1] / beta)
-        print(ddf.values[0, -1] / beta)
+    # Step 1: Read the necessary data
+    dhdls = None
+    uks = None
+    if do_dhdl:
+        dhdls = parser.get_dhdls()
+    if do_uks:
+        uks = parser.get_uks()
 
-    # Todo: Implement output
+    # Step 2: Uncorrelate the data
+    if uncorrelator.needs_dhdls:
+        uncorrelator.set_dhdls(dhdls)
+    if uncorrelator.needs_uks:
+        uncorrelator.set_uks(uks)
+
+    ls = None
+    if do_dhdl:
+        dhdls, ls = uncorrelator.uncorrelate(dhdls)
+    if do_uks:
+        uks, ls = uncorrelator.uncorrelate(uks)
+
+    # Step 3: Estimate Free energy differences
+    dfs = []
+    ddfs = []
+
+    for estimator in estimators:
+        if estimator.needs_dhdls:
+            estimator.set_dhdls(dhdls)
+        if estimator.needs_uks:
+            estimator.set_uks(uks)
+        df, ddf = estimator.estimate()
+        dfs.append(df)
+        ddfs.append(ddf)
+
+    # Step 4: Output
+    for output in outputs:
+        output.output(estimators, dfs, ddfs, args.t, ls)
 
 
 main()
