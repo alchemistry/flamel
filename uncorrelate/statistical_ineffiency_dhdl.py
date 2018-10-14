@@ -17,9 +17,24 @@ class StatisticalIneffiencyDhdl:
         l_values_ = []
 
         for dhdl_ in self.dhdls:
-            l_values_.append(list(dhdl_.xs(0, level=0).index.values[0]))
+            if len(dhdl_.columns) == 1:
+                l_values_.append(list([dhdl_.xs(0, level=0).index.values[0]]))
+            else:
+                l_values_.append(list(dhdl_.xs(0, level=0).index.values[0]))
 
-        dl = np.gradient(np.array(l_values_))[0]
+        dl = []
+        for i, l in enumerate(l_values_):
+            dli = []
+            for j, lij in enumerate(l):
+                dlij = False
+                if i < len(l_values_) - 1:
+                    if l_values_[i+1][j] != lij:
+                        dlij = True
+                if i > 0:
+                    if l_values_[i - 1][j] != lij:
+                        dlij = True
+                dli.append(dlij)
+            dl.append(dli)
 
         uncorrelated_dfs = []
         for dhdl_, l, df in zip(self.dhdls, dl, dfs):
