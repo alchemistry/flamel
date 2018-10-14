@@ -12,12 +12,11 @@ class Simple:
 
     def output(self,  estimators, dfs, ddfs, t, ls):
         for estimator, df, ddf in zip(estimators, dfs, ddfs):
-            print(estimator.name)
-
             beta = 1.0 / t / self.k_b
-            print(df.values[0, -1] / beta)
-            print(ddf.values[0, -1] / beta)
+            dfv = df.values[0, -1] / beta
+            ddfv = ddf.values[0, -1] / beta
+            print("%s: %f +- %f" % (estimator.name, dfv, ddfv))
 
 
-def get_plugin(*args):
+def get_plugin():
     return Simple()
