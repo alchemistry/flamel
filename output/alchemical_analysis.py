@@ -1,4 +1,5 @@
 class AlchemicalAnalysis:
+    name = 'alchemical-analysis'
     k_b = 8.3144621E-3
 
     @classmethod

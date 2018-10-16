@@ -4,10 +4,7 @@ import numpy as np
 
 
 class Simple:
-    dfs = None
-    ddfs = None
-    estimators = None
-    t = None
+    name = 'simple'
     k_b = 8.3144621E-3
 
     def output(self,  estimators, t, ls):
