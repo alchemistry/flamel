@@ -42,7 +42,7 @@ class Gmx:
 
         # Sort the list by of tuples by the number
         sorted_files = sorted(files, key=lambda tup: tup[1])
-        
+
         # Return only the file names
         return [f[0] for f in sorted_files]
 

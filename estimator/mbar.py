@@ -6,10 +6,10 @@ import alchemlyb.preprocessing
 class Mbar:
     name = 'MBAR'
     needs_dhdls = False
-    needs_uks = True
+    needs_u_nks = True
 
     dhdls = None
-    uks = None
+    u_nks = None
 
     delta_f = None
     d_delta_f = None
@@ -20,7 +20,7 @@ class Mbar:
         :param u_nks: 
         :return: 
         """
-        self.uks = u_nks
+        self.u_nks = u_nks
 
     def estimate(self):
         """
@@ -28,7 +28,7 @@ class Mbar:
         :return:
         """
         mbar_est = alchemlyb.estimators.mbar_.MBAR()
-        mbar_est.fit(self.uks)
+        mbar_est.fit(self.u_nks)
 
         # Todo: Think about what data format we want to use here (current: DataFrame)
         self.delta_f, self.d_delta_f = mbar_est.delta_f_, mbar_est.d_delta_f_

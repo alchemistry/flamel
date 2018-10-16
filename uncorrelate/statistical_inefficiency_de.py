@@ -6,12 +6,12 @@ import pandas
 class StatisticalInefficiencyUnks:
     name = 'dE'
     needs_dhdls = False
-    needs_uks = True
+    needs_u_nks = True
 
     uks = None
 
-    def set_u_nks(self, uks):
-        self.uks = uks
+    def set_u_nks(self, u_nks):
+        self.uks = u_nks
 
     def uncorrelate(self, dfs):
         l_values_ = []

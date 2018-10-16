@@ -3,7 +3,7 @@ class AlchemicalAnalysis:
     k_b = 8.3144621E-3
 
     @classmethod
-    def lenr(self, text, l=21):
+    def lenr(cls, text, l=21):
         """
         Right aligned text in a string with length `l`
         :param text: str
@@ -16,7 +16,7 @@ class AlchemicalAnalysis:
         return ' '*(l - len(text)) + text + ' '
 
     @classmethod
-    def lenc(self, text, l=21):
+    def lenc(cls, text, l=21):
         """
         Center text in a string with length `l`
         :param text: str

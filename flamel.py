@@ -14,7 +14,7 @@ def get_available_plugin_ids(type):
     # Todo: Implement this
 
     if type == 'estimator':
-        return ['ti', 'mbar', 'ti_cubic']
+        return ['ti', 'ti_cubic', 'mbar']
     if type == 'uncorrelate':
         return ['statistical_inefficiency_dhdl']
     if type == 'output':
@@ -107,11 +107,11 @@ def main():
 
     # Step 0: Check what data the uncorrelator and the selected estimators need
     do_dhdl = uncorrelator.needs_dhdls
-    do_u_nks = uncorrelator.needs_uks
+    do_u_nks = uncorrelator.needs_u_nks
     for estimator in estimators:
         if estimator.needs_dhdls:
             do_dhdl = True
-        if estimator.needs_uks:
+        if estimator.needs_u_nks:
             do_u_nks = True
 
     # Step 1: Read the necessary data
@@ -125,7 +125,7 @@ def main():
     # Step 2: Uncorrelate the data
     if uncorrelator.needs_dhdls:
         uncorrelator.set_dhdls(dhdls)
-    if uncorrelator.needs_uks:
+    if uncorrelator.needs_u_nks:
         uncorrelator.set_u_nks(u_nks)
 
     ls = None
@@ -138,7 +138,7 @@ def main():
     for estimator in estimators:
         if estimator.needs_dhdls:
             estimator.set_dhdls(dhdls)
-        if estimator.needs_uks:
+        if estimator.needs_u_nks:
             estimator.set_u_nks(u_nks)
         estimator.estimate()
 

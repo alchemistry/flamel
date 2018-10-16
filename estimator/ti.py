@@ -5,10 +5,10 @@ import alchemlyb.estimators
 class Ti:
     name = 'TI'
     needs_dhdls = True
-    needs_uks = False
+    needs_u_nks = False
 
     dhdls = None
-    uks = None
+    u_nks = None
 
     delta_f = None
     d_delta_f = None

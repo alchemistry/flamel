@@ -8,7 +8,7 @@ class StatisticalInefficiencyDhdl:
     name = 'dhdl'
 
     needs_dhdls = True
-    needs_uks = False
+    needs_u_nks = False
 
     dhdl = None
 
