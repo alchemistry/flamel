@@ -4,6 +4,7 @@ import pandas
 
 # Todo: Test this, correct this, documentation
 class StatisticalInefficiencyUnks:
+    name = 'dE'
     needs_dhdls = False
     needs_uks = True
 

@@ -3,7 +3,7 @@
 import argparse
 
 
-def get_available_plugins(type):
+def get_available_plugin_ids(type):
     """
     Get a list of available plugins of a cetrain type
     :param type: str
@@ -15,15 +15,33 @@ def get_available_plugins(type):
 
     if type == 'estimator':
         return ['ti', 'mbar', 'ti_cubic']
-    return ['simple', 'alchemical_analysis']
+    if type == 'uncorrelate':
+        return ['statistical_inefficiency_dhdl']
+    if type == 'output':
+        return ['simple', 'alchemical_analysis']
 
 
-def load_plugin(type, name, *args):
+def load_plugin_by_name(type, name, *args):
+    """
+    Load a plugin by its name
+    :param type: str
+        Plugin type
+    :param name: str
+        Plugin name
+    :param args:
+        Args passed to the plugin
+    :return:
+        The plugin
+    """
+    return load_plugins(type, [name], *args)[0]
+
+
+def load_plugin(type, id, *args):
     """
     Load a specific plugin
     :param type: str
         Type of the plugin
-    :param name: str
+    :param id: str
         Name of the plugin
     :param args:
         Args passed to the plugin
@@ -31,7 +49,7 @@ def load_plugin(type, name, *args):
         The plugin
     """
     # Todo: think about a suitable plugin system
-    mod = __import__("%s.%s" % (type, name), fromlist=['object'])
+    mod = __import__("%s.%s" % (type, id), fromlist=['object'])
     return mod.get_plugin(*args)
 
 
@@ -46,7 +64,7 @@ def argsplit(arg):
     return [] if arg is None else arg.split(',')
 
 
-def load_plugins(type, selected):
+def load_plugins(type, selected, *args):
     """
     Load multiple plugins
     :param type:
@@ -56,19 +74,15 @@ def load_plugins(type, selected):
     :return: Series
         The list of plugins
     """
-    available = get_available_plugins(type)
-    plugin_names = []
-    if selected:
-        for plugin_name in selected:
-            if plugin_name in available:
-                plugin_names.append(plugin_name)
-
-    else:
-        plugin_names = available
-
+    available = get_available_plugin_ids(type)
     plugins = []
-    for plugin_name in plugin_names:
-        plugins.append(load_plugin(type, plugin_name))
+    for plugin_id in available:
+        plugin = load_plugin(type, plugin_id, *args)
+        if selected:
+            if plugin.name in selected:
+                plugins.append(plugin)
+        else:
+            plugins.append(plugin)
 
     return plugins
 
@@ -78,16 +92,16 @@ def main():
                     Collect data and estimate free energy differences
                     """, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-t', dest='t', type=float, default='300.0', help="Temperature")
-    parser.add_argument('-p', dest='pre', type=str, default='', help="File prefix")
-    parser.add_argument('-s', dest='suffix', type=str, default='.xvg', help="File suffix")
+    parser.add_argument('-p', dest='pre', type=str, default='dhdl', help="File prefix")
+    parser.add_argument('-s', dest='suffix', type=str, default='xvg', help="File suffix")
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
-    parser.add_argument('-u', dest='uncorrelator', type=str, default='statistical_inefficiency_dhdl', help="Data uncorrelation method")
+    parser.add_argument('-u', dest='uncorrelator', type=str, default='dhdl', help="Data uncorrelation method")
     parser.add_argument('-o', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-parser', dest='parser', type=str, default='gmx', help="Parser")
     args = parser.parse_args()
 
     parser = load_plugin('parser', args.parser, args.t, args.pre, args.suffix)
-    uncorrelator = load_plugin('uncorrelate', args.uncorrelator)
+    uncorrelator = load_plugin_by_name('uncorrelate', args.uncorrelator)
     outputs = load_plugins('output', argsplit(args.output))
     estimators = load_plugins('estimator', argsplit(args.estimators))
 

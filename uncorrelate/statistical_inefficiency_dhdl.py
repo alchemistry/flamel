@@ -5,6 +5,8 @@ import numpy as np
 
 # Todo: Use interface here
 class StatisticalInefficiencyDhdl:
+    name = 'dhdl'
+
     needs_dhdls = True
     needs_uks = False
 
