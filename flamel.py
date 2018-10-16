@@ -47,7 +47,7 @@ def main():
     parser.add_argument('-p', dest='pre', type=str, default='', help="File prefix")
     parser.add_argument('-s', dest='suffix', type=str, default='.xvg', help="File suffix")
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
-    parser.add_argument('-u', dest='uncorrelator', type=str, default='statistical_ineffiency_dhdl', help="Data uncorrelation method")
+    parser.add_argument('-u', dest='uncorrelator', type=str, default='statistical_inefficiency_dhdl', help="Data uncorrelation method")
     parser.add_argument('-o', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-parser', dest='parser', type=str, default='gmx', help="Parser")
     args = parser.parse_args()

@@ -11,9 +11,20 @@ class StatisticalIneffiencyDhdl:
     dhdl = None
 
     def set_dhdls(self, dhdls):
+        """
+        :param dhdls: Series
+            List of dH/dl values
+        :return:
+        """
         self.dhdls = dhdls
 
     def uncorrelate(self, dfs):
+        """
+        :param dfs: Series
+            List of data to uncorrelate
+        :return: Dataframe
+            uncorrelated Dataframe of `dfs`
+        """
         l_values_ = []
 
         for dhdl_ in self.dhdls:
@@ -47,4 +58,9 @@ class StatisticalIneffiencyDhdl:
 
 
 def get_plugin(*args):
+    """
+    :param args:
+    :return:
+        Statitical inefficiency uncorrelator
+    """
     return StatisticalIneffiencyDhdl()

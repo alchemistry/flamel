@@ -1,9 +1,8 @@
 import alchemlyb.preprocessing
 import pandas
-import numpy as np
 
 
-# Todo: Use interface here
+# Todo: Test this, correct this, documentation
 class StatisticalIneffiencyUks:
     needs_dhdls = False
     needs_uks = True
@@ -21,13 +20,16 @@ class StatisticalIneffiencyUks:
 
         i = 0
         uncorrelated_dfs = []
+        statinefs = []
         for uk, df in zip(self.uks, dfs):
             if i + 1 < len(self.uks):
                 s = uk.iloc[:, 0:i + 2]
             else:
                 s = uk.iloc[:, 0:i]
 
-            uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, s, conservative=False))
+            uncorrelated_df, statinef = alchemlyb.preprocessing.statistical_inefficiency(df, s, conservative=False)
+            uncorrelated_dfs.append(uncorrelated_df)
+            statinefs.append(statinef)
             i += 1
 
         return pandas.concat(uncorrelated_dfs), l_values_
