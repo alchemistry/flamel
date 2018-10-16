@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class AlchemicalAnalysis:
     name = 'alchemical-analysis'
     k_b = 8.3144621E-3
@@ -33,20 +34,49 @@ class AlchemicalAnalysis:
         return ' '*ll + text + ' '*lr + ' '
 
     @classmethod
-    def segments(cls, estimators):
-        segments = []
-        l_types = []
+    def ls(cls, estimators):
+        """
+        Return a list of lambda values
+        :param estimators: Series
+            List of estimator plugins
+        :return:
+            The list of lambda values
+        """
         ls = []
         if estimators:
             if estimators[0].needs_dhdls:
-                l_types = estimators[0].dhdls.index.names[1:]
                 means = estimators[0].dhdls.mean(level=estimators[0].dhdls.index.names[1:])
                 ls = np.array(means.reset_index()[means.index.names[:]])
             elif estimators[0].needs_u_nks:
-                l_types = estimators[0].u_nks.index.names[1:]
                 means = estimators[0].u_nks.mean(level=estimators[0].u_nks.index.names[1:])
                 ls = np.array(means.reset_index()[means.index.names[:]])
 
+        return ls
+
+    @classmethod
+    def l_types(cls, estimators):
+        """
+        Return a list of lambda types
+        :param estimators: Series
+            List of estimator plugins
+        :return:
+            The list of lambda types
+        """
+        l_types = []
+        if estimators:
+            if estimators[0].needs_dhdls:
+                l_types = estimators[0].dhdls.index.names[1:]
+            elif estimators[0].needs_u_nks:
+                l_types = estimators[0].u_nks.index.names[1:]
+
+        return l_types
+
+    @classmethod
+    def segments(cls, estimators):
+        segments = []
+        l_types = cls.l_types(estimators)
+        ls = cls.ls(estimators)
+        if estimators:
             segstart = 0
             ill = [0] * len(l_types)
             nl = 0
@@ -64,7 +94,7 @@ class AlchemicalAnalysis:
                     segstart = i
         return segments
 
-    def output(self,  estimators, t, ls):
+    def output(self,  estimators, t):
         """
         Print a alchemical-analysis like output.
         :param estimators: Series
@@ -98,7 +128,7 @@ class AlchemicalAnalysis:
         out += "\n"
 
         # Free Energy differences for each lambda state
-        for i, l in enumerate(ls[:-1]):
+        for i, l in enumerate(self.ls(estimators)[:-1]):
             out += self.lenc(str(i) + ' -- ' + str(i+1), 12)
 
             for estimator in estimators:

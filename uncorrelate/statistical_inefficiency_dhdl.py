@@ -56,7 +56,7 @@ class StatisticalInefficiencyDhdl:
             dhdl_sum = dhdl_.dot(ind)
             uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, conservative=False))
 
-        return pandas.concat(uncorrelated_dfs), l_values_
+        return pandas.concat(uncorrelated_dfs)
 
 
 def get_plugin(*args):

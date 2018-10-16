@@ -7,7 +7,7 @@ class Simple:
     name = 'simple'
     k_b = 8.3144621E-3
 
-    def output(self,  estimators, t, ls):
+    def output(self,  estimators, t):
         """
         Print a simple output.
         :param estimators: Series

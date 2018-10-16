@@ -130,9 +130,9 @@ def main():
 
     ls = None
     if do_dhdl:
-        dhdls, ls = uncorrelator.uncorrelate(dhdls)
+        dhdls = uncorrelator.uncorrelate(dhdls)
     if do_u_nks:
-        u_nks, ls = uncorrelator.uncorrelate(u_nks)
+        u_nks = uncorrelator.uncorrelate(u_nks)
 
     # Step 3: Estimate Free energy differences
     for estimator in estimators:
@@ -144,7 +144,7 @@ def main():
 
     # Step 4: Output
     for output in outputs:
-        output.output(estimators, args.t, ls)
+        output.output(estimators, args.t)
 
 
 main()
