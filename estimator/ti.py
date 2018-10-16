@@ -10,15 +10,27 @@ class Ti:
     dhdls = None
     uks = None
 
+    delta_f = None
+    d_delta_f = None
+
     def set_dhdls(self, dhdls):
+        """
+        Setter method for dH/dl values
+        :param dhdls:
+        :return:
+        """
         self.dhdls = dhdls
 
     def estimate(self):
+        """
+        Estimate free energy differences using Trapezoid thermodynamic integration
+        :return:
+        """
         ti_est = alchemlyb.estimators.ti_.TI()
         ti_est.fit(self.dhdls)
 
         # Todo: Think about what data format we want to use here (current: DataFrame)
-        return ti_est.delta_f_, ti_est.d_delta_f_
+        self.delta_f, self.d_delta_f = ti_est.delta_f_, ti_est.d_delta_f_
 
 
 def get_plugin():

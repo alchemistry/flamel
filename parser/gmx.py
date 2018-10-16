@@ -1,8 +1,6 @@
 import os
 import alchemlyb.parsing.gmx
 import alchemlyb.preprocessing
-import pandas
-import numpy as np
 
 
 # Todo: Use an interface here...
@@ -10,29 +8,47 @@ class Gmx:
     dhdls = None
     uks = None
     T = 300.0
-    pre = ''
-    post = '.xvg'
+    prefix = ''
+    suffix = '.xvg'
 
-    def __init__(self, T, pre, post):
+    def __init__(self, T, prefix, suffix):
+        """
+        :param T: float
+            Temperature in K
+        :param prefix: str
+            File prefix
+        :param suffix: str
+            File suffix
+        """
         self.T = T
-        self.pre = pre
-        self.post = post
+        self.prefix = prefix
+        self.suffix = suffix
 
     def get_files(self):
+        """
+        Get a list of files with the given prefix and suffix
+        :return: Series
+            The list of files
+        """
         ls = os.listdir()
 
         files = []
         for f in ls:
-            if f[0:len(self.pre)] == self.pre and f[-len(self.post):] == self.post:
-                files.append(int(f[len(self.pre):-len(self.post)]))
+            if f[0:len(self.prefix)] == self.prefix and f[-len(self.suffix):] == self.suffix:
+                files.append(int(f[len(self.prefix):-len(self.suffix)]))
 
         nums = sorted(files)
 
-        sorted_files = list(map(lambda x: self.pre + str(x) + self.post, nums))
+        sorted_files = list(map(lambda x: self.prefix + str(x) + self.suffix, nums))
 
         return sorted_files
 
     def get_dhdls(self):
+        """
+        Read dH/dl values from files
+        :return: Series
+            List of dH/dl data frames
+        """
         files = self.get_files()
         dhdls_ = []
 
@@ -43,7 +59,12 @@ class Gmx:
 
         return dhdls_
 
-    def get_uks(self):
+    def get_u_nks(self):
+        """
+        Read u_nk values from files
+        :return:
+            List of u_nk data frames
+        """
         files = self.get_files()
         uks_ = []
 
@@ -59,4 +80,15 @@ class Gmx:
 
 
 def get_plugin(*args):
+    """
+    Get the GMX parser plugin
+    :param T: float
+        Temperature in K
+    :param prefix: str
+        File prefix
+    :param suffix: str
+        File suffix
+    :return: Parser
+        The GMX parser
+    """
     return Gmx(*args)

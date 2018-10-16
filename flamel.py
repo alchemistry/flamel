@@ -4,24 +4,58 @@ import argparse
 
 
 def get_available_plugins(type):
+    """
+    Get a list of available plugins of a cetrain type
+    :param type: str
+        Type of the plugin
+    :return: Series
+        List of available plugin names
+    """
     # Todo: Implement this
 
     if type == 'estimator':
-        return ['ti', 'mbar']
+        return ['ti', 'mbar', 'ti_cubic']
     return ['simple', 'alchemical_analysis']
 
 
 def load_plugin(type, name, *args):
+    """
+    Load a specific plugin
+    :param type: str
+        Type of the plugin
+    :param name: str
+        Name of the plugin
+    :param args:
+        Args passed to the plugin
+    :return:
+        The plugin
+    """
     # Todo: think about a suitable plugin system
     mod = __import__("%s.%s" % (type, name), fromlist=['object'])
     return mod.get_plugin(*args)
 
 
 def argsplit(arg):
+    """
+    Helper method to split a comma separated string to a list
+    :param arg: str
+        Input string
+    :return: Series
+        List of sections in the string
+    """
     return [] if arg is None else arg.split(',')
 
 
 def load_plugins(type, selected):
+    """
+    Load multiple plugins
+    :param type:
+        Type of the plugins to load
+    :param selected:
+        List of selected plugins - if empty every available plugin will be used
+    :return: Series
+        The list of plugins
+    """
     available = get_available_plugins(type)
     plugin_names = []
     if selected:
@@ -59,49 +93,44 @@ def main():
 
     # Step 0: Check what data the uncorrelator and the selected estimators need
     do_dhdl = uncorrelator.needs_dhdls
-    do_uks = uncorrelator.needs_uks
+    do_u_nks = uncorrelator.needs_uks
     for estimator in estimators:
         if estimator.needs_dhdls:
             do_dhdl = True
         if estimator.needs_uks:
-            do_uks = True
+            do_u_nks = True
 
     # Step 1: Read the necessary data
     dhdls = None
-    uks = None
+    u_nks = None
     if do_dhdl:
         dhdls = parser.get_dhdls()
-    if do_uks:
-        uks = parser.get_uks()
+    if do_u_nks:
+        u_nks = parser.get_u_nks()
 
     # Step 2: Uncorrelate the data
     if uncorrelator.needs_dhdls:
         uncorrelator.set_dhdls(dhdls)
     if uncorrelator.needs_uks:
-        uncorrelator.set_uks(uks)
+        uncorrelator.set_u_nks(u_nks)
 
     ls = None
     if do_dhdl:
         dhdls, ls = uncorrelator.uncorrelate(dhdls)
-    if do_uks:
-        uks, ls = uncorrelator.uncorrelate(uks)
+    if do_u_nks:
+        u_nks, ls = uncorrelator.uncorrelate(u_nks)
 
     # Step 3: Estimate Free energy differences
-    dfs = []
-    ddfs = []
-
     for estimator in estimators:
         if estimator.needs_dhdls:
             estimator.set_dhdls(dhdls)
         if estimator.needs_uks:
-            estimator.set_uks(uks)
-        df, ddf = estimator.estimate()
-        dfs.append(df)
-        ddfs.append(ddf)
+            estimator.set_u_nks(u_nks)
+        estimator.estimate()
 
     # Step 4: Output
     for output in outputs:
-        output.output(estimators, dfs, ddfs, args.t, ls)
+        output.output(estimators, args.t, ls)
 
 
 main()

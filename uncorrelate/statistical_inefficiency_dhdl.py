@@ -4,7 +4,7 @@ import numpy as np
 
 
 # Todo: Use interface here
-class StatisticalIneffiencyDhdl:
+class StatisticalInefficiencyDhdl:
     needs_dhdls = True
     needs_uks = False
 
@@ -63,4 +63,4 @@ def get_plugin(*args):
     :return:
         Statitical inefficiency uncorrelator
     """
-    return StatisticalIneffiencyDhdl()
+    return StatisticalInefficiencyDhdl()

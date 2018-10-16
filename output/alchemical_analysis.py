@@ -29,15 +29,11 @@ class AlchemicalAnalysis:
         ll = l - len(text) - lr
         return ' '*ll + text + ' '*lr + ' '
 
-    def output(self,  estimators, dfs, ddfs, t, ls):
+    def output(self,  estimators, t, ls):
         """
         Print a alchemical-analysis like output.
         :param estimators: Series
             Series of estimators
-        :param dfs: Series
-            Series of free energy differences for each estimator
-        :param ddfs: Series
-            Series of free energy difference errors for each estimator
         :param t: float
             temperature in K
         :param ls: Series
@@ -69,7 +65,9 @@ class AlchemicalAnalysis:
         for i, l in enumerate(ls[:-1]):
             out += self.lenc(str(i) + ' -- ' + str(i+1), 12)
 
-            for estimator, df, ddf in zip(estimators, dfs, ddfs):
+            for estimator in estimators:
+                df = estimator.delta_f
+                ddf = estimator.d_delta_f
                 out += self.lenr('%0.3f  +-  %0.3f' % (df.values[i, i+1] / beta, ddf.values[i, i+1] / beta))
             out += "\n"
 
@@ -81,7 +79,9 @@ class AlchemicalAnalysis:
 
         # TOTAL Energies
         out += self.lenr('TOTAL:  ', 12)
-        for df, ddf in zip(dfs, ddfs):
+        for estimator in estimators:
+            df = estimator.delta_f
+            ddf = estimator.d_delta_f
             out += self.lenr('%0.3f  +-  %0.3f' % (df.values[0, -1] / beta, ddf.values[0, -1] / beta))
         out += "\n"
 
@@ -89,4 +89,9 @@ class AlchemicalAnalysis:
 
 
 def get_plugin():
+    """
+    Get Alchemical analysis output plugin
+    :return:
+        Alchemical analysis output plugin
+    """
     return AlchemicalAnalysis()

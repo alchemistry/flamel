@@ -3,13 +3,13 @@ import pandas
 
 
 # Todo: Test this, correct this, documentation
-class StatisticalIneffiencyUks:
+class StatisticalInefficiencyUnks:
     needs_dhdls = False
     needs_uks = True
 
     uks = None
 
-    def set_uks(self, uks):
+    def set_u_nks(self, uks):
         self.uks = uks
 
     def uncorrelate(self, dfs):
@@ -36,4 +36,4 @@ class StatisticalIneffiencyUks:
 
 
 def get_plugin(*args):
-    return StatisticalIneffiencyUks()
+    return StatisticalInefficiencyUnks()
