@@ -1,3 +1,5 @@
+import numpy as np
+
 class AlchemicalAnalysis:
     name = 'alchemical-analysis'
     k_b = 8.3144621E-3
@@ -30,6 +32,38 @@ class AlchemicalAnalysis:
         ll = l - len(text) - lr
         return ' '*ll + text + ' '*lr + ' '
 
+    @classmethod
+    def segments(cls, estimators):
+        segments = []
+        l_types = []
+        ls = []
+        if estimators:
+            if estimators[0].needs_dhdls:
+                l_types = estimators[0].dhdls.index.names[1:]
+                means = estimators[0].dhdls.mean(level=estimators[0].dhdls.index.names[1:])
+                ls = np.array(means.reset_index()[means.index.names[:]])
+            elif estimators[0].needs_u_nks:
+                l_types = estimators[0].u_nks.index.names[1:]
+                means = estimators[0].u_nks.mean(level=estimators[0].u_nks.index.names[1:])
+                ls = np.array(means.reset_index()[means.index.names[:]])
+
+            segstart = 0
+            ill = [0] * len(l_types)
+            nl = 0
+            for i in range(len(ls)):
+                l = ls[i]
+                if (i < len(ls) - 1 and list(np.array(ls[i + 1], dtype=bool)).count(True) > nl) or i == len(ls) - 1:
+                    if nl > 0:
+                        inl = np.array(np.array(l, dtype=bool), dtype=int)
+                        l_name = l_types[list(inl - ill).index(1)]
+                        ill = inl
+                        segments.append((segstart, i, l_name))
+
+                    if i + 1 < len(ls):
+                        nl = list(np.array(ls[i + 1], dtype=bool)).count(True)
+                    segstart = i
+        return segments
+
     def output(self,  estimators, t, ls):
         """
         Print a alchemical-analysis like output.
@@ -43,6 +77,7 @@ class AlchemicalAnalysis:
         """
         beta = 1.0 / t / self.k_b
         out = ''
+        segments = self.segments(estimators)
 
         # First ----
         out += self.lenc('-'*12, 12)
@@ -77,6 +112,15 @@ class AlchemicalAnalysis:
         for _ in estimators:
             out += self.lenc('-'*21)
         out += "\n"
+
+        for segstart, segend, l_name in reversed(segments):
+            # Segment Energies
+            out += self.lenr('%s:  ' % l_name[:-7], 12)
+            for estimator in estimators:
+                df = estimator.delta_f
+                ddf = estimator.d_delta_f
+                out += self.lenr('%0.3f  +-  %0.3f' % (df.values[segstart, segend] / beta, ddf.values[segstart, segend] / beta))
+            out += "\n"
 
         # TOTAL Energies
         out += self.lenr('TOTAL:  ', 12)
