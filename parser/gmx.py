@@ -9,7 +9,7 @@ class Gmx:
     uks = None
     T = 300.0
     prefix = ''
-    suffix = '.xvg'
+    suffix = 'xvg'
 
     def __init__(self, T, prefix, suffix):
         """
@@ -32,16 +32,19 @@ class Gmx:
         """
         ls = os.listdir()
 
+        # Build a list of tuples with name and a number
         files = []
         for f in ls:
             if f[0:len(self.prefix)] == self.prefix and f[-len(self.suffix):] == self.suffix:
-                files.append(int(f[len(self.prefix):-len(self.suffix)]))
+                name = f[len(self.prefix):-len(self.suffix)]
+                num = int(''.join([c for c in name if c.isdigit()]))
+                files.append((f, num))
 
-        nums = sorted(files)
-
-        sorted_files = list(map(lambda x: self.prefix + str(x) + self.suffix, nums))
-
-        return sorted_files
+        # Sort the list by of tuples by the number
+        sorted_files = sorted(files, key=lambda tup: tup[1])
+        
+        # Return only the file names
+        return [f[0] for f in sorted_files]
 
     def get_dhdls(self):
         """
