@@ -57,7 +57,7 @@ class Gmx:
         dhdls_ = []
 
         for fname in files:
-            print('Read %s' % fname)
+            print('Read dH/dl from %s' % fname)
             dhdl_ = alchemlyb.parsing.gmx.extract_dHdl(fname, self.T)
             dhdls_.append(dhdl_)
 
@@ -73,7 +73,7 @@ class Gmx:
         uks_ = []
 
         for fname in files:
-            print('Read %s' % fname)
+            print('Read U_nk from %s' % fname)
 
             uk = alchemlyb.parsing.gmx.extract_u_nk(fname, self.T)
 

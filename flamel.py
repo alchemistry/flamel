@@ -14,7 +14,7 @@ def get_available_plugin_ids(type):
     # Todo: Implement this
 
     if type == 'estimator':
-        return ['ti', 'ti_cubic', 'mbar']
+        return ['ti', 'ti_cubic', 'bar', 'mbar']
     if type == 'uncorrelate':
         return ['statistical_inefficiency_dhdl']
     if type == 'output':
