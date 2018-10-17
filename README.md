@@ -69,7 +69,7 @@ You should get a similar overview as [alchemical-analysis](https://github.com/Mo
 Each step is performed in Plugins which can easyly be be replaced by other plugins. 
 
 # Name
-In the tradition to refer free energy estimations to alchemnistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
+In the tradition to associate free energy estimations with alchemnistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
 
 # Alchemical-analysis vs flamel:
 Eventhoug alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
