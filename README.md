@@ -1,5 +1,5 @@
 # Flamel
-A plugin based free energy estimation tool based on [alchemlyb](https://github.com/alchemistry/alchemlyb)
+A plugin based free energy estimation tool using [alchemlyb](https://github.com/alchemistry/alchemlyb)
 
 # Installation
 1. Download and install alchemlyb
