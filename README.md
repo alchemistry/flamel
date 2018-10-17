@@ -55,7 +55,7 @@ optional arguments:
 
 To read enumerated xvg files lambda_0.xvg, lambda_1.xvg, ... use: 
 ```shell
-flamel.py -p lambda_ -s .xvg -t 300
+flamel.py -p lambda_
 ```
 
 You should get a similar overview as [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis).
