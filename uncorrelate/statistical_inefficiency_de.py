@@ -13,7 +13,7 @@ class StatisticalInefficiencyUnks:
     def set_u_nks(self, u_nks):
         self.uks = u_nks
 
-    def uncorrelate(self, dfs):
+    def uncorrelate(self, dfs, lower):
         l_values_ = []
 
         for uk_ in self.uks:
@@ -28,7 +28,7 @@ class StatisticalInefficiencyUnks:
             else:
                 s = uk.iloc[:, 0:i]
 
-            uncorrelated_df, statinef = alchemlyb.preprocessing.statistical_inefficiency(df, s, conservative=False)
+            uncorrelated_df, statinef = alchemlyb.preprocessing.statistical_inefficiency(df, s, lower, conservative=False)
             uncorrelated_dfs.append(uncorrelated_df)
             statinefs.append(statinef)
             i += 1

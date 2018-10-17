@@ -5,6 +5,7 @@ import alchemlyb.preprocessing
 
 # Todo: Use an interface here...
 class Gmx:
+    name = 'Gromacs'
     dhdls = None
     uks = None
     T = 300.0

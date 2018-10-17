@@ -20,7 +20,7 @@ class StatisticalInefficiencyDhdl:
         """
         self.dhdls = dhdls
 
-    def uncorrelate(self, dfs):
+    def uncorrelate(self, dfs, lower):
         """
         :param dfs: Series
             List of data to uncorrelate
@@ -54,7 +54,7 @@ class StatisticalInefficiencyDhdl:
             ind = np.array(l, dtype=bool)
             ind = np.array(ind, dtype=int)
             dhdl_sum = dhdl_.dot(ind)
-            uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, conservative=False))
+            uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, lower, conservative=False))
 
         return pandas.concat(uncorrelated_dfs)
 

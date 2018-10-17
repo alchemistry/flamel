@@ -19,6 +19,8 @@ def get_available_plugin_ids(type):
         return ['statistical_inefficiency_dhdl']
     if type == 'output':
         return ['simple', 'alchemical_analysis']
+    if type == 'parser':
+        return ['gmx']
 
 
 def load_plugin_by_name(type, name, *args):
@@ -91,17 +93,18 @@ def main():
     parser = argparse.ArgumentParser(description="""
                     Collect data and estimate free energy differences
                     """, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-t', dest='t', type=float, default='300.0', help="Temperature")
-    parser.add_argument('-p', dest='pre', type=str, default='dhdl', help="File prefix")
-    parser.add_argument('-s', dest='suffix', type=str, default='xvg', help="File suffix")
+    parser.add_argument('-t', '--temperature', dest='temperature', help="Temperature in K. Default: 298 K.", default=298.0, type=float)
+    parser.add_argument('-p', '--prefix', dest='prefix', help='Prefix for datafile sets, i.e.\'dhdl\' (default).', default='dhdl')
+    parser.add_argument('-q', '--suffix', dest='suffix', help='Suffix for datafile sets, i.e. \'xvg\' (default).', default='xvg')
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
-    parser.add_argument('-u', dest='uncorrelator', type=str, default='dhdl', help="Data uncorrelation method")
-    parser.add_argument('-o', dest='output', type=str, default=None, help="Output methods")
-    parser.add_argument('-parser', dest='parser', type=str, default='gmx', help="Parser")
+    parser.add_argument('-n', '--uncorr', dest='uncorr', help='The observable to be used for the autocorrelation analysis; either \'dhdl_all\' (obtained as a sum over all energy components) or \'dhdl\' (obtained as a sum over those energy components that are changing; default) or \'dE\'. In the latter case the energy differences dE_{i,i+1} (dE_{i,i-1} for the last lambda) are used.', default='dhdl')
+    parser.add_argument('-o', '--output', dest='output', type=str, default=None, help="Output methods")
+    parser.add_argument('-a', '--software', dest='software', help='Package\'s name the data files come from: Gromacs, Sire, Desmond, or AMBER. Default: Gromacs.', default='Gromacs')
+    parser.add_argument('-s', '--skiptime', dest='equiltime', help='Discard data prior to this specified time as \'equilibration\' data. Units picoseconds. Default: 0 ps.', default=0, type=float)
     args = parser.parse_args()
 
-    parser = load_plugin('parser', args.parser, args.t, args.pre, args.suffix)
-    uncorrelator = load_plugin_by_name('uncorrelate', args.uncorrelator)
+    parser = load_plugin_by_name('parser', args.software, args.temperature, args.prefix, args.suffix)
+    uncorrelator = load_plugin_by_name('uncorrelate', args.uncorr)
     outputs = load_plugins('output', argsplit(args.output))
     estimators = load_plugins('estimator', argsplit(args.estimators))
 
@@ -128,11 +131,10 @@ def main():
     if uncorrelator.needs_u_nks:
         uncorrelator.set_u_nks(u_nks)
 
-    ls = None
     if do_dhdl:
-        dhdls = uncorrelator.uncorrelate(dhdls)
+        dhdls = uncorrelator.uncorrelate(dhdls, args.equiltime)
     if do_u_nks:
-        u_nks = uncorrelator.uncorrelate(u_nks)
+        u_nks = uncorrelator.uncorrelate(u_nks, args.equiltime)
 
     # Step 3: Estimate Free energy differences
     for estimator in estimators:
@@ -144,7 +146,7 @@ def main():
 
     # Step 4: Output
     for output in outputs:
-        output.output(estimators, args.t)
+        output.output(estimators, args.temperature)
 
 
 main()
