@@ -6,13 +6,13 @@ that uses the well tested [alchemlyb](https://github.com/alchemistry/alchemlyb) 
 # Installation
 1. Download and install alchemlyb
 ```shell
-git clone git@github.com:harlor/alchemlyb.git
+git clone git@github.com:alchemistry/alchemlyb.git
 cd alchemlyb
 pip install .
 ```
 2. Download flamel
 ```shell
-git clone git@github.com:harlor/flamel.git
+git clone git@github.com:alchemistry/flamel.git
 ```
 
 # Usage
