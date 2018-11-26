@@ -7,17 +7,18 @@ class Simple:
     name = 'simple'
     k_b = 8.3144621E-3
 
-    def output(self,  estimators, t):
+    def output(self,  estimators, args):
         """
-        Print a simple output.
+        Print a alchemical-analysis like output.
         :param estimators: Series
             Series of estimators
-        :param t: float
-            temperature in K
+        :param args: argparse obj
+            arguments from argparse
         :param ls: Series
             Lambdas
         :return:
         """
+        t = args.temperature
         for estimator in estimators:
             df = estimator.delta_f
             ddf = estimator.d_delta_f

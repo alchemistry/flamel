@@ -73,6 +73,13 @@ class AlchemicalAnalysis:
 
     @classmethod
     def segments(cls, estimators):
+        """
+        Collect and prepare values from different `estimators` into a series of values.
+         :param estimators: Series
+            List of estimator plugins
+        :return:
+            Segments of values to output
+        """
         segments = []
         l_types = cls.l_types(estimators)
         ls = cls.ls(estimators)
@@ -94,17 +101,35 @@ class AlchemicalAnalysis:
                     segstart = i
         return segments
 
-    def output(self,  estimators, t):
+    @classmethod
+    def prepare_value(cls, value, decimal):
+        """
+        Convert `value` to a str with `decimal` precision.
+        :param value: float
+            Value to convert
+        :param decimal:
+            Precision
+        :return: str
+            str of `value` with `decimal` precision
+        """
+        value_str = str(round(value, decimal))
+        if np.isnan(value):
+            return str(value) + ' '*(decimal - 1)
+        return value_str + '0'*(decimal - len(value_str.split('.')[1]))
+
+    def output(self,  estimators, args):
         """
         Print a alchemical-analysis like output.
         :param estimators: Series
             Series of estimators
-        :param t: float
-            temperature in K
+        :param args: argparse obj
+            arguments from argparse
         :param ls: Series
             Lambdas
         :return:
         """
+        t = args.temperature
+        seglen = 2 * args.decimal + 15
         beta = 1.0 / t / self.k_b
         out = ''
         segments = self.segments(estimators)
@@ -112,19 +137,19 @@ class AlchemicalAnalysis:
         # First ----
         out += self.lenc('-'*12, 12)
         for _ in estimators:
-            out += self.lenc('-'*21)
+            out += self.lenc('-'*seglen)
         out += "\n"
 
         # Labels
         out += self.lenc('States', 12)
         for estimator in estimators:
-            out += self.lenr(estimator.name + ' (kJ/mol)   ')
+            out += self.lenr(estimator.name + ' (kJ/mol)' + ' '*args.decimal, seglen)
         out += "\n"
 
         # Second ----
         out += self.lenc('-'*12, 12)
         for _ in estimators:
-            out += self.lenc('-'*21)
+            out += self.lenc('-'*seglen)
         out += "\n"
 
         # Free Energy differences for each lambda state
@@ -134,13 +159,16 @@ class AlchemicalAnalysis:
             for estimator in estimators:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
-                out += self.lenr('%0.3f  +-  %0.3f' % (df.values[i, i+1] / beta, ddf.values[i, i+1] / beta))
+                out += self.lenr('%s  +-  %s' % (
+                    self.prepare_value(df.values[i, i+1] / beta, args.decimal),
+                    self.prepare_value(ddf.values[i, i+1] / beta, args.decimal)
+                ), seglen)
             out += "\n"
 
         # Third ----
         out += self.lenc('-'*12, 12)
         for _ in estimators:
-            out += self.lenc('-'*21)
+            out += self.lenc('-'*seglen)
         out += "\n"
 
         for segstart, segend, l_name in reversed(segments):
@@ -149,7 +177,10 @@ class AlchemicalAnalysis:
             for estimator in estimators:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
-                out += self.lenr('%0.3f  +-  %0.3f' % (df.values[segstart, segend] / beta, ddf.values[segstart, segend] / beta))
+                out += self.lenr('%s  +-  %s' % (
+                    self.prepare_value(df.values[segstart, segend] / beta, args.decimal),
+                    self.prepare_value(ddf.values[segstart, segend] / beta, args.decimal)
+                ), seglen)
             out += "\n"
 
         # TOTAL Energies
@@ -157,7 +188,10 @@ class AlchemicalAnalysis:
         for estimator in estimators:
             df = estimator.delta_f
             ddf = estimator.d_delta_f
-            out += self.lenr('%0.3f  +-  %0.3f' % (df.values[0, -1] / beta, ddf.values[0, -1] / beta))
+            out += self.lenr('%s  +-  %s' % (
+                self.prepare_value(df.values[0, -1] / beta, args.decimal),
+                self.prepare_value(ddf.values[0, -1] / beta, args.decimal)
+            ), seglen)
         out += "\n"
 
         print(out)

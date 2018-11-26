@@ -98,6 +98,7 @@ def main():
     parser.add_argument('-q', '--suffix', dest='suffix', help='Suffix for datafile sets, i.e. \'xvg\' (default).', default='xvg')
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
     parser.add_argument('-n', '--uncorr', dest='uncorr', help='The observable to be used for the autocorrelation analysis; either \'dhdl_all\' (obtained as a sum over all energy components) or \'dhdl\' (obtained as a sum over those energy components that are changing; default) or \'dE\'. In the latter case the energy differences dE_{i,i+1} (dE_{i,i-1} for the last lambda) are used.', default='dhdl')
+    parser.add_argument('-r', '--decimal', dest='decimal', help='The number of decimal places the free energies are to be reported with. No worries, this is for the text output only; the full-precision data will be stored in \'results.pickle\'. Default: 3.', default=3, type=int)
     parser.add_argument('-o', '--output', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-a', '--software', dest='software', help='Package\'s name the data files come from: Gromacs, Sire, Desmond, or AMBER. Default: Gromacs.', default='Gromacs')
     parser.add_argument('-s', '--skiptime', dest='equiltime', help='Discard data prior to this specified time as \'equilibration\' data. Units picoseconds. Default: 0 ps.', default=0, type=float)
@@ -146,7 +147,7 @@ def main():
 
     # Step 4: Output
     for output in outputs:
-        output.output(estimators, args.temperature)
+        output.output(estimators, args)
 
 
 main()
