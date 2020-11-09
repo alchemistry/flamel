@@ -1,6 +1,6 @@
 # Flamel
 
-The aim of the project is to develop a foundation for a new version of [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis)
+The aim of this project is to develop the foundation for a new version of [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis)
 that uses the well tested [alchemlyb](https://github.com/alchemistry/alchemlyb) library.
 
 # Installation
@@ -73,13 +73,13 @@ You should get a similar overview as [alchemical-analysis](https://github.com/Mo
 - Step 3: Estimate Free energy differences
 - Step 4: Output
 
-Each step is performed in Plugins which can easyly be be replaced by other plugins. 
+Each step is performed in Plugins which can easily be replaced by other plugins. 
 
 # Name
-In the tradition to associate free energy estimations with alchemnistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
+In the tradition to associate free energy estimations with alchemy, the ancient craft of transmutating one element into another, it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel).
 
-# Sate of development:
-Eventhoug alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
+# State of development
+Eventhough alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
 
 In fact for TI, BAR, MBAR you should get exactly the same results:
 
@@ -111,7 +111,11 @@ Alchemical Analysis with the same input files:
     TOTAL:      -29.154  +-  0.241    -29.067  +-  0.170    -29.074  +-  0.220
 ```
 
-# Planed features:
+# Planed features
+- **pickle and txt output**
+Add support for plotting the dHdls of states and the BAR/MBAR overlap matrix (preliminary feature in alchemlyb).
+- **pickle and txt output**
+alchemical-analysis outputs the simple result table as a text file as well as the full precision calculations as a numpy-compatible pickle file.
 - **Output of statistical inefficiencies**
 alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
 - **Uncorrelation threshold**
