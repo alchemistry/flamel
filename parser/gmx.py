@@ -25,13 +25,13 @@ class Gmx:
         self.prefix = prefix
         self.suffix = suffix
 
-    def get_files(self):
+    def get_files(self, args):
         """
         Get a list of files with the given prefix and suffix
         :return: Series
             The list of files
         """
-        ls = os.listdir()
+        ls = os.listdir(args.datafile_directory)
 
         # Build a list of tuples with name and a number
         files = []
@@ -47,29 +47,29 @@ class Gmx:
         # Return only the file names
         return [f[0] for f in sorted_files]
 
-    def get_dhdls(self):
+    def get_dhdls(self, args):
         """
         Read dH/dl values from files
         :return: Series
             List of dH/dl data frames
         """
-        files = self.get_files()
+        files = self.get_files(args)
         dhdls_ = []
 
         for fname in files:
             print('Read dH/dl from %s' % fname)
-            dhdl_ = alchemlyb.parsing.gmx.extract_dHdl(fname, self.T)
+            dhdl_ = alchemlyb.parsing.gmx.extract_dHdl(args.datafile_directory + '/' + fname, self.T)
             dhdls_.append(dhdl_)
 
         return dhdls_
 
-    def get_u_nks(self):
+    def get_u_nks(self, args):
         """
         Read u_nk values from files
         :return:
             List of u_nk data frames
         """
-        files = self.get_files()
+        files = self.get_files(args)
         uks_ = []
 
         for fname in files:

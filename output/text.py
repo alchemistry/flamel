@@ -1,8 +1,9 @@
 import numpy as np
+import time
+import os
 
-
-class AlchemicalAnalysis:
-    name = 'alchemical-analysis'
+class Text:
+    name = 'text'
     k_b = 8.3144621E-3
 
     @classmethod
@@ -143,7 +144,11 @@ class AlchemicalAnalysis:
         seglen = 2 * args.decimal + 15
         out = ''
         segments = self.segments(estimators)
-
+        
+        out += "Free Energy analysis; Text output from flamel.py invoked at: " + time.asctime()
+        
+        out += os.getcwd()
+        
         # First ----
         out += self.lenc('-'*12, 12)
         for _ in estimators:
@@ -170,8 +175,8 @@ class AlchemicalAnalysis:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[i, i+1] / conversion, args.decimal),
-                    self.prepare_value(ddf.values[i, i+1] / conversion, args.decimal)
+                    self.prepare_value(df.values[i, i+1] * conversion, args.decimal),
+                    self.prepare_value(ddf.values[i, i+1] * conversion, args.decimal)
                 ), seglen)
             out += "\n"
 
@@ -188,8 +193,8 @@ class AlchemicalAnalysis:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[segstart, segend] / conversion, args.decimal),
-                    self.prepare_value(ddf.values[segstart, segend] / conversion, args.decimal)
+                    self.prepare_value(df.values[segstart, segend] * conversion, args.decimal),
+                    self.prepare_value(ddf.values[segstart, segend] * conversion, args.decimal)
                 ), seglen)
             out += "\n"
 
@@ -199,12 +204,14 @@ class AlchemicalAnalysis:
             df = estimator.delta_f
             ddf = estimator.d_delta_f
             out += self.lenr('%s  +-  %s' % (
-                self.prepare_value(df.values[0, -1] / conversion, args.decimal),
-                self.prepare_value(ddf.values[0, -1] / conversion, args.decimal)
+                self.prepare_value(df.values[0, -1] * conversion, args.decimal),
+                self.prepare_value(ddf.values[0, -1] * conversion, args.decimal)
             ), seglen)
         out += "\n"
 
-        print(out)
+        txt_file = open(args.resultfilename+'.txt','w')
+        txt_file.write(out)
+        txt_file.close()
 
 
 def get_plugin():
@@ -213,4 +220,4 @@ def get_plugin():
     :return:
         Alchemical analysis output plugin
     """
-    return AlchemicalAnalysis()
+    return Text()
