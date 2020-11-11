@@ -18,8 +18,9 @@ git clone git@github.com:alchemistry/flamel.git
 # Usage
 Currently only Gromacs parser and uncorrelation by dH/dl is supported!
 ```
-usage: flamel.py [-h] [-t TEMPERATURE] [-p PREFIX] [-q SUFFIX] [-e ESTIMATORS]
-                 [-n UNCORR] [-r DECIMAL] [-o OUTPUT] [-a SOFTWARE]
+usage: flamel.py [-h] [-t TEMPERATURE] [-p PREFIX] [-d DATAFILE_DIRECTORY]
+                 [-q SUFFIX] [-e ESTIMATORS] [-n UNCORR] [-j RESULTFILENAME]
+                 [-u UNIT] [-r DECIMAL] [-o OUTPUT] [-a SOFTWARE]
                  [-s EQUILTIME]
 
 Collect data and estimate free energy differences
@@ -31,6 +32,9 @@ optional arguments:
   -p PREFIX, --prefix PREFIX
                         Prefix for datafile sets, i.e.'dhdl' (default).
                         (default: dhdl)
+  -d DATAFILE_DIRECTORY, --dir DATAFILE_DIRECTORY
+                        Directory in which data files are stored. Default:
+                        Current directory. (default: .)
   -q SUFFIX, --suffix SUFFIX
                         Suffix for datafile sets, i.e. 'xvg' (default).
                         (default: xvg)
@@ -43,6 +47,11 @@ optional arguments:
                         default) or 'dE'. In the latter case the energy
                         differences dE_{i,i+1} (dE_{i,i-1} for the last
                         lambda) are used. (default: dhdl)
+  -j RESULTFILENAME, --resultfilename RESULTFILENAME
+                        custom defined result filename prefix. Default:
+                        results (default: results)
+  -u UNIT, --unit UNIT  Unit to report energies: 'kJ', 'kcal', and 'kT'.
+                        Default: 'kJ' (default: kJ)
   -r DECIMAL, --decimal DECIMAL
                         The number of decimal places the free energies are to
                         be reported with. No worries, this is for the text
@@ -111,12 +120,12 @@ Alchemical Analysis with the same input files:
     TOTAL:      -29.154  +-  0.241    -29.067  +-  0.170    -29.074  +-  0.220
 ```
 
-# Planed features
-- **pickle and txt output**
+# Planned features
+- [ ] **plotting** 
 Add support for plotting the dHdls of states and the BAR/MBAR overlap matrix (preliminary feature in alchemlyb).
-- **pickle and txt output**
+- [x] **pickle and txt output**
 alchemical-analysis outputs the simple result table as a text file as well as the full precision calculations as a numpy-compatible pickle file.
-- **Output of statistical inefficiencies**
+- [ ] **Output of statistical inefficiencies**
 alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
-- **Uncorrelation threshold**
+- [ ] **Uncorrelation threshold**
 In alchemical-analysis it is possible to specify a threshold for the number of samples to keep in the uncorrelation process.
