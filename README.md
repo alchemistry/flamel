@@ -76,6 +76,28 @@ flamel.py -p lambda_
 
 You should get a similar overview as [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis).
 
+You also get a text file `results.txt` with the state overview, as well as a pickle file `results.pickle` with full precision values as well as complementary information about the analysis. 
+
+Example:
+```
+>>> import pandas as pd
+>>> data = pd.read_pickle('results.pickle')
+>>> data.
+data.dF                  data.datafile_directory  data.decimal             data.estimators          data.prefix              data.software            data.temperature         data.unit
+data.dFs                 data.ddFs                data.equiltime           data.output              data.resultfilename      data.suffix              data.uncorr              data.when_analyzed
+>>> data.when_analyzed
+'Wed Nov 11 15:22:32 2020'
+>>> data.equiltime
+0
+>>> data.software
+'Gromacs'
+>>> data.dF['TI']
+{'coul-lambda': (-15.633404527627823, 0.03466623342555742), 'vdw-lambda': (3.8237866774171514, 0.02952686840637163), 'total': (-11.809617850210671, 0.04553661930581169)}
+>>> data.dF['MBAR']['coul-lambda']
+(-15.617280704605726, 0.03241377327730135)
+>>> 
+``
+
 # How it works
 - Step 1: Read the necessary data
 - Step 2: Uncorrelate the data
