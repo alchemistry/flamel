@@ -29,11 +29,11 @@ class Simple:
         elif args.unit == 'kcal' or args.unit == 'kcal/mol':
             conversion = 0.239006 / (t * self.k_b)
             args.unit = 'kcal/mol'
-        
+
         for estimator in estimators:
             df = estimator.delta_f
             ddf = estimator.d_delta_f
-            
+
             dfv = df.values[0, -1] * conversion
             ddfv = ddf.values[0, -1] * conversion
             print("%s: %f +- %f" % (estimator.name, dfv, ddfv))

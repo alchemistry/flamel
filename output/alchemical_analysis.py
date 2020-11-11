@@ -139,7 +139,7 @@ class AlchemicalAnalysis:
         elif args.unit == 'kcal' or args.unit == 'kcal/mol':
             conversion = 0.239006 / (t * self.k_b)
             args.unit = 'kcal/mol'
-        
+
         seglen = 2 * args.decimal + 15
         out = ''
         segments = self.segments(estimators)
@@ -170,8 +170,8 @@ class AlchemicalAnalysis:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[i, i+1] / conversion, args.decimal),
-                    self.prepare_value(ddf.values[i, i+1] / conversion, args.decimal)
+                    self.prepare_value(df.values[i, i+1] * conversion, args.decimal),
+                    self.prepare_value(ddf.values[i, i+1] * conversion, args.decimal)
                 ), seglen)
             out += "\n"
 
@@ -188,8 +188,8 @@ class AlchemicalAnalysis:
                 df = estimator.delta_f
                 ddf = estimator.d_delta_f
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[segstart, segend] / conversion, args.decimal),
-                    self.prepare_value(ddf.values[segstart, segend] / conversion, args.decimal)
+                    self.prepare_value(df.values[segstart, segend] * conversion, args.decimal),
+                    self.prepare_value(ddf.values[segstart, segend] * conversion, args.decimal)
                 ), seglen)
             out += "\n"
 
@@ -199,8 +199,8 @@ class AlchemicalAnalysis:
             df = estimator.delta_f
             ddf = estimator.d_delta_f
             out += self.lenr('%s  +-  %s' % (
-                self.prepare_value(df.values[0, -1] / conversion, args.decimal),
-                self.prepare_value(ddf.values[0, -1] / conversion, args.decimal)
+                self.prepare_value(df.values[0, -1] * conversion, args.decimal),
+                self.prepare_value(ddf.values[0, -1] * conversion, args.decimal)
             ), seglen)
         out += "\n"
 
