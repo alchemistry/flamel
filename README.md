@@ -96,7 +96,7 @@ data.dFs                 data.ddFs                data.equiltime           data.
 >>> data.dF['MBAR']['coul-lambda']
 (-15.617280704605726, 0.03241377327730135)
 >>> 
-``
+```
 
 # How it works
 - Step 1: Read the necessary data
