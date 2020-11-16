@@ -135,10 +135,10 @@ class Text:
             conversion = 1.0
             args.unit = 'kT'
         elif args.unit == 'kJ' or args.unit == 'kJ/mol':
-            conversion = 1.0 / (t * self.k_b)
+            conversion = t * self.k_b
             args.unit = 'kJ/mol'
         elif args.unit == 'kcal' or args.unit == 'kcal/mol':
-            conversion = 0.239006 / (t * self.k_b)
+            conversion = 0.239006 * t * self.k_b
             args.unit = 'kcal/mol'
         
         seglen = 2 * args.decimal + 15
