@@ -32,11 +32,17 @@ class Gmx:
             The list of files
         """
         ls = os.listdir(args.datafile_directory)
-
         # Build a list of tuples with name and a number
         files = []
         for f in ls:
-            if f[0:len(self.prefix)] == self.prefix and f[-len(self.suffix):] == self.suffix:
+            if os.path.isdir(f):
+                ls_sub = os.listdir(args.datafile_directory + '/' + f)
+                for fsub in ls_sub:
+                    if fsub[0:len(self.prefix)] == self.prefix and fsub[-len(self.suffix):] == self.suffix:
+                        name = f
+                        num = int(''.join([c for c in name if c.isdigit()]))
+                        files.append((f+ '/'+ fsub, num))
+            elif f[0:len(self.prefix)] == self.prefix and f[-len(self.suffix):] == self.suffix:
                 name = f[len(self.prefix):-len(self.suffix)]
                 num = int(''.join([c for c in name if c.isdigit()]))
                 files.append((f, num))
