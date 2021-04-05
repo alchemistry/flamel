@@ -109,12 +109,13 @@ class Pickle:
             ddf = estimator.d_delta_f
             
             for segstart, segend, l_name in reversed(segments):
-                data[l_name] = (df.values[segstart, segend], ddf.values[segstart, segend])
+                data[l_name] = (df.values[segstart, segend] * conversion,
+                        ddf.values[segstart, segend] * conversion)
             
-            data['total'] = (df.values[0, -1], ddf.values[0, -1])
+            data['total'] = (df.values[0, -1] * conversion, ddf.values[0, -1] * conversion)
                 
-            P.dFs[estimator.name] = df
-            P.ddFs[estimator.name] = ddf
+            P.dFs[estimator.name] = df * conversion
+            P.ddFs[estimator.name] = ddf * conversion
 
             P.dF[estimator.name] = data
         
