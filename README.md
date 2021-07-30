@@ -1,7 +1,15 @@
 # Flamel
 
 The aim of the project is to develop a foundation for a new version of [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis)
-that uses the well tested [alchemlyb](https://github.com/alchemistry/alchemlyb) library.
+that uses the well tested [alchemlyb](https://github.com/alchemistry/alchemlyb) library. It is supposed to become [the successor of alchemical-analysis](https://github.com/alchemistry/alchemlyb/wiki/Roadmap#librarify-alchemical-analysis-functionality)].
+
+----
+
+This project is currently dormant due to lack of developers. If you are **interested in contributing** please raise issues/open pull requests and ping [@orbeckst](https://github.com/orbeckst) and [@xiki-tempula](https://github.com/xiki-tempula) to get our attention. 
+We are happy to see new contributors!
+
+----
+
 
 # Installation
 1. Download and install alchemlyb
@@ -76,9 +84,9 @@ You should get a similar overview as [alchemical-analysis](https://github.com/Mo
 Each step is performed in Plugins which can easyly be be replaced by other plugins. 
 
 # Name
-In the tradition to associate free energy estimations with alchemnistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
+In the tradition to associate free energy estimations with alchemistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
 
-# Sate of development:
+# State of development:
 Eventhoug alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
 
 In fact for TI, BAR, MBAR you should get exactly the same results:
