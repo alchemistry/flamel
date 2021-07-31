@@ -107,7 +107,7 @@ def main():
     args = parser.parse_args()
 
     parser = load_plugin_by_name('parser', args.software, args.temperature, args.prefix, args.suffix)
-    uncorrelator = load_plugin_by_name('uncorrelate', args.uncorr)
+    uncorrelator = load_plugin_by_name('uncorrelate', args.uncorr, args.uncorr_threshold)
     outputs = load_plugins('output', argsplit(args.output))
     estimators = load_plugins('estimator', argsplit(args.estimators))
 

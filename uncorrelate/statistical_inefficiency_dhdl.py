@@ -11,6 +11,10 @@ class StatisticalInefficiencyDhdl:
     needs_u_nks = False
 
     dhdl = None
+    uncorr_threshold = None
+
+    def __init__(self, uncorr_threshold):
+        self.uncorr_threshold = uncorr_threshold
 
     def set_dhdls(self, dhdls):
         """
@@ -59,7 +63,11 @@ class StatisticalInefficiencyDhdl:
             N, N_k = len(df), len(uncorrelated_df)
             g = N/N_k
             print("%6s %12s %12s %12.2f" % (idx, N, N_k, g))
-            uncorrelated_dfs.append(uncorrelated_df)
+            if N_k < self.uncorr_threshold:
+                print("WARNING: Only %d uncorrelated samples found at lambda number %d; proceeding with analysis using correlated samples..." % (N_k, idx))
+                uncorrelated_dfs.append(df)
+            else:
+                uncorrelated_dfs.append(uncorrelated_df)
 
         return uncorrelated_dfs
 
@@ -70,4 +78,4 @@ def get_plugin(*args):
     :return:
         Statitical inefficiency uncorrelator
     """
-    return StatisticalInefficiencyDhdl()
+    return StatisticalInefficiencyDhdl(*args)
