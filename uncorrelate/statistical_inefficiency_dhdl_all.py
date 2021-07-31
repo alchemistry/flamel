@@ -29,9 +29,14 @@ class StatisticalInefficiencyDhdlAll:
         """
 
         uncorrelated_dfs = []
-        for dhdl_, df in zip(self.dhdls, dfs):
+        print("Number of correlated and uncorrelated samples (Method=%s):\n\n%6s %12s %12s %12s\n" % ("dHdl (all)", "State", "N", "N_k", "N/N_k"))
+        for idx, (dhdl_, df) in enumerate(zip(self.dhdls, dfs)):
             dhdl_sum = dhdl_.sum(axis=1)
-            uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, lower, conservative=False))
+            uncorrelated_df = alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, lower, conservative=False)
+            N, N_k = len(df), len(uncorrelated_df)
+            g = N/N_k
+            print("%6s %12s %12s %12.2f" % (idx, N, N_k, g))
+            uncorrelated_dfs.append(uncorrelated_df)
 
         return pandas.concat(uncorrelated_dfs)
 

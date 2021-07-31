@@ -133,8 +133,10 @@ def main():
         uncorrelator.set_u_nks(u_nks)
 
     if do_dhdl:
+        print("Uncorrelating dH/dl ...")
         dhdls = uncorrelator.uncorrelate(dhdls, args.equiltime)
     if do_u_nks:
+        print("Uncorrelating reduced potentials ...")
         u_nks = uncorrelator.uncorrelate(u_nks, args.equiltime)
 
     # Step 3: Estimate Free energy differences
