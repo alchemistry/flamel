@@ -118,9 +118,3 @@ Alchemical Analysis with the same input files:
   vdWaals:       11.912  +-  0.160     11.954  +-  0.111     12.022  +-  0.139 
     TOTAL:      -29.154  +-  0.241    -29.067  +-  0.170    -29.074  +-  0.220
 ```
-
-# Planed features:
-- **Output of statistical inefficiencies**
-alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
-- **Uncorrelation threshold**
-In alchemical-analysis it is possible to specify a threshold for the number of samples to keep in the uncorrelation process.
