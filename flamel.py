@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import pandas as pd
 
 
 def get_available_plugin_ids(type):
@@ -98,6 +99,7 @@ def main():
     parser.add_argument('-q', '--suffix', dest='suffix', help='Suffix for datafile sets, i.e. \'xvg\' (default).', default='xvg')
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
     parser.add_argument('-n', '--uncorr', dest='uncorr', help='The observable to be used for the autocorrelation analysis; either \'dhdl_all\' (obtained as a sum over all energy components) or \'dhdl\' (obtained as a sum over those energy components that are changing; default) or \'dE\'. In the latter case the energy differences dE_{i,i+1} (dE_{i,i-1} for the last lambda) are used.', default='dhdl')
+    parser.add_argument('-i', '--uncorr_threshold', dest='uncorr_threshold', help='Proceed with correlated samples (N) if the number of uncorrelated samples (N_k) is found to be less than this number. If 0 is given, the time series analysis will not be performed at all. Default: 50.', default=50, type=int)
     parser.add_argument('-r', '--decimal', dest='decimal', help='The number of decimal places the free energies are to be reported with. No worries, this is for the text output only; the full-precision data will be stored in \'results.pickle\'. Default: 3.', default=3, type=int)
     parser.add_argument('-o', '--output', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-a', '--software', dest='software', help='Package\'s name the data files come from: Gromacs, Sire, Desmond, or AMBER. Default: Gromacs.', default='Gromacs')
@@ -127,17 +129,24 @@ def main():
         u_nks = parser.get_u_nks()
 
     # Step 2: Uncorrelate the data
-    if uncorrelator.needs_dhdls:
-        uncorrelator.set_dhdls(dhdls)
-    if uncorrelator.needs_u_nks:
-        uncorrelator.set_u_nks(u_nks)
+    if args.uncorr_threshold > 0:
+        if uncorrelator.needs_dhdls:
+            uncorrelator.set_dhdls(dhdls)
+        if uncorrelator.needs_u_nks:
+            uncorrelator.set_u_nks(u_nks)
 
-    if do_dhdl:
-        print("Uncorrelating dH/dl ...")
-        dhdls = uncorrelator.uncorrelate(dhdls, args.equiltime)
-    if do_u_nks:
-        print("Uncorrelating reduced potentials ...")
-        u_nks = uncorrelator.uncorrelate(u_nks, args.equiltime)
+        if do_dhdl:
+            print("Uncorrelating dH/dl ...")
+            dhdls = uncorrelator.uncorrelate(dhdls, args.equiltime)
+        if do_u_nks:
+            print("Uncorrelating reduced potentials ...")
+            u_nks = uncorrelator.uncorrelate(u_nks, args.equiltime)
+
+    # concat data for estimators
+    if u_nks is not None:
+        u_nks = pd.concat(u_nks)
+    if dhdls is not None:
+        dhdls = pd.concat(dhdls)
 
     # Step 3: Estimate Free energy differences
     for estimator in estimators:

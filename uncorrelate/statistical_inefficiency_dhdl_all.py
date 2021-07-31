@@ -38,7 +38,7 @@ class StatisticalInefficiencyDhdlAll:
             print("%6s %12s %12s %12.2f" % (idx, N, N_k, g))
             uncorrelated_dfs.append(uncorrelated_df)
 
-        return pandas.concat(uncorrelated_dfs)
+        return uncorrelated_dfs
 
 
 def get_plugin(*args):
