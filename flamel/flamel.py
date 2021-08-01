@@ -51,7 +51,7 @@ def load_plugin(type, id, *args):
         The plugin
     """
     # Todo: think about a suitable plugin system
-    mod = __import__("%s.%s" % (type, id), fromlist=['object'])
+    mod = __import__("flamel.%s.%s" % (type, id), fromlist=['object'])
     return mod.get_plugin(*args)
 
 
