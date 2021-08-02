@@ -1,6 +1,7 @@
 import alchemlyb.preprocessing
 import pandas
 import numpy as np
+from warnings import warn
 
 
 # Todo: Use interface here
@@ -65,7 +66,7 @@ class StatisticalInefficiencyDhdl:
             g = N/N_k
             print(f"{idx:>6} {N:>12} {N_k:>12} {g:>12.2f}")
             if N_k < self.uncorr_threshold:
-                print(f"WARNING: Only {N_k} uncorrelated samples found at lambda number {idx}; proceeding with analysis using correlated samples...")
+                warn(f"Only {N_k} uncorrelated samples found at lambda number {idx}; proceeding with analysis using correlated samples...")
                 uncorrelated_dfs.append(df)
             else:
                 uncorrelated_dfs.append(uncorrelated_df)
