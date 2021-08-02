@@ -33,15 +33,16 @@ class StatisticalInefficiencyDhdlAll:
         """
 
         uncorrelated_dfs = []
-        print("Number of correlated and uncorrelated samples (Method=%s):\n\n%6s %12s %12s %12s\n" % ("dHdl (all)", "State", "N", "N_k", "N/N_k"))
+        print("Number of correlated and uncorrelated samples (Method=dHdl (all)):")
+        print("\n State            N          N_k        N/N_k\n")
         for idx, (dhdl_, df) in enumerate(zip(self.dhdls, dfs)):
             dhdl_sum = dhdl_.sum(axis=1)
             uncorrelated_df = alchemlyb.preprocessing.statistical_inefficiency(df, dhdl_sum, lower, conservative=False)
             N, N_k = len(df), len(uncorrelated_df)
             g = N/N_k
-            print("%6s %12s %12s %12.2f" % (idx, N, N_k, g))
+            print(f"{idx:>6} {N:>12} {N_k:>12} {g:>12.2f}")
             if N_k < self.uncorr_threshold:
-                print("WARNING: Only %d uncorrelated samples found at lambda number %d; proceeding with analysis using correlated samples..." % (N_k, idx))
+                print(f"WARNING: Only {N_k} uncorrelated samples found at lambda number {idx}; proceeding with analysis using correlated samples...")
                 uncorrelated_dfs.append(df)
             else:
                 uncorrelated_dfs.append(uncorrelated_df)
