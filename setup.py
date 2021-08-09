@@ -6,14 +6,19 @@
 """
 
 from setuptools import setup, find_packages
-import pathlib
-from os.path import join
+import versioneer
 
-here = pathlib.Path(__file__).parent.resolve()
+try:
+    with open("README.md", "r") as handle:
+        long_description = handle.read()
+except:
+    long_description = None
+
 
 setup(
     name='flamel',
-    version='0.1',  # TODO version
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description='CLI tool for analyzing alchemical free energy calculcations',
     maintainer='Oliver Beckstein',
     maintainer_email='orbeckst@gmail.com',
@@ -32,8 +37,8 @@ setup(
     ],
     packages=find_packages(),
     license='BSD',
-    long_description = open(join(here, 'README.md')).read(),
-    long_description_content_type='text/x-rst',
+    long_description = long_description,
+    long_description_content_type='text/markdown',
     roject_urls={'Source': 'https://github.com/alchemistry/flamel'},
     install_requires=['numpy', 'alchemlyb', 'pandas>=1.2,!=1.3.0'],
     entry_points={
