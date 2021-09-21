@@ -1,9 +1,8 @@
 import numpy as np
-
+import alchemlyb.postprocessors.units as units
 
 class AlchemicalAnalysis:
-    name = 'alchemical-analysis'
-    k_b = 8.3144621E-3
+    name = 'alchemical_analysis'
 
     @classmethod
     def lenr(cls, text, l=21):
@@ -128,17 +127,6 @@ class AlchemicalAnalysis:
             Lambdas
         :return:
         """
-        t = args.temperature
-
-        if args.unit == 'kT':
-            conversion = 1.0
-            args.unit = 'kT'
-        elif args.unit == 'kJ' or args.unit == 'kJ/mol':
-            conversion = 1.0 * t * self.k_b
-            args.unit = 'kJ/mol'
-        elif args.unit == 'kcal' or args.unit == 'kcal/mol':
-            conversion = 0.239006 * t * self.k_b
-            args.unit = 'kcal/mol'
 
         seglen = 2 * args.decimal + 15
         out = ''
@@ -167,11 +155,11 @@ class AlchemicalAnalysis:
             out += self.lenc(str(i) + ' -- ' + str(i+1), 12)
 
             for estimator in estimators:
-                df = estimator.delta_f
-                ddf = estimator.d_delta_f
+                df = units.get_unit_converter(args.unit)(estimator.delta_f)
+                ddf = units.get_unit_converter(args.unit)(estimator.d_delta_f)
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[i, i+1] * conversion, args.decimal),
-                    self.prepare_value(ddf.values[i, i+1] * conversion, args.decimal)
+                    self.prepare_value(df.values[i, i+1], args.decimal),
+                    self.prepare_value(ddf.values[i, i+1], args.decimal)
                 ), seglen)
             out += "\n"
 
@@ -185,26 +173,28 @@ class AlchemicalAnalysis:
             # Segment Energies
             out += self.lenr('%s:  ' % l_name[:-7], 12)
             for estimator in estimators:
-                df = estimator.delta_f
-                ddf = estimator.d_delta_f
+                df = units.get_unit_converter(args.unit)(estimator.delta_f)
+                ddf = units.get_unit_converter(args.unit)(estimator.d_delta_f)
                 out += self.lenr('%s  +-  %s' % (
-                    self.prepare_value(df.values[segstart, segend] * conversion, args.decimal),
-                    self.prepare_value(ddf.values[segstart, segend] * conversion, args.decimal)
+                    self.prepare_value(df.values[segstart, segend], args.decimal),
+                    self.prepare_value(ddf.values[segstart, segend], args.decimal)
                 ), seglen)
             out += "\n"
 
         # TOTAL Energies
         out += self.lenr('TOTAL:  ', 12)
         for estimator in estimators:
-            df = estimator.delta_f
-            ddf = estimator.d_delta_f
+            df = units.get_unit_converter(args.unit)(estimator.delta_f)
+            ddf = units.get_unit_converter(args.unit)(estimator.d_delta_f)
             out += self.lenr('%s  +-  %s' % (
-                self.prepare_value(df.values[0, -1] * conversion, args.decimal),
-                self.prepare_value(ddf.values[0, -1] * conversion, args.decimal)
+                self.prepare_value(df.values[0, -1], args.decimal),
+                self.prepare_value(ddf.values[0, -1], args.decimal)
             ), seglen)
         out += "\n"
-
         print(out)
+        txt_file = open(args.resultfilename + '.txt', 'w')
+        txt_file.write(out)
+        txt_file.close()
 
 
 def get_plugin():

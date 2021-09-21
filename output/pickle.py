@@ -1,13 +1,12 @@
-import alchemlyb.preprocessing
-import pandas
 import numpy as np
 import pickle
 import time
 import os
 
+import alchemlyb.postprocessors.units as units
+
 class Pickle:
     name = 'pickle'
-    k_b = 8.3144621E-3
     
     @classmethod
     def ls(cls, estimators):
@@ -78,19 +77,7 @@ class Pickle:
         return segments
 
     def output(self,  estimators, args):
-        
-        t = args.temperature
-        
-        if args.unit == 'kT':
-            conversion = 1.0
-            args.unit = 'kT'
-        elif args.unit == 'kJ' or args.unit == 'kJ/mol':
-            conversion = t * self.k_b
-            args.unit = 'kJ/mol'
-        elif args.unit == 'kcal' or args.unit == 'kcal/mol':
-            conversion = 0.239006 * t * self.k_b
-            args.unit = 'kcal/mol'
-        
+
         P = args
         
         P.datafile_directory = os.getcwd()
@@ -104,22 +91,22 @@ class Pickle:
         for estimator in estimators:
             
             data = {}
-            
-            df = estimator.delta_f
-            ddf = estimator.d_delta_f
+
+            df = units.get_unit_converter(args.unit)(estimator.delta_f)
+            ddf = units.get_unit_converter(args.unit)(estimator.d_delta_f)
             
             for segstart, segend, l_name in reversed(segments):
-                data[l_name] = (df.values[segstart, segend] * conversion,
-                        ddf.values[segstart, segend] * conversion)
+                data[l_name] = (df.values[segstart, segend],
+                        ddf.values[segstart, segend])
             
-            data['total'] = (df.values[0, -1] * conversion, ddf.values[0, -1] * conversion)
+            data['total'] = (df.values[0, -1], ddf.values[0, -1])
                 
-            P.dFs[estimator.name] = df * conversion
-            P.ddFs[estimator.name] = ddf * conversion
+            P.dFs[estimator.name] = df
+            P.ddFs[estimator.name] = ddf
 
             P.dF[estimator.name] = data
         
-        pickle.dump(P,open(args.resultfilename + '.pickle','wb'))
+        pickle.dump(P, open(args.resultfilename + '.pickle', 'wb'))
 
 
 def get_plugin():

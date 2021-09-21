@@ -52,8 +52,9 @@ class StatisticalInefficiencyDhdl:
         uncorrelated_dfs = []
         for dhdl_, l, df in zip(self.dhdls, dl, dfs):
             uncorrelated_dfs.append(alchemlyb.preprocessing.statistical_inefficiency(df, lower=lower))
-
-        return pandas.concat(uncorrelated_dfs)
+        uncorrelated_df = pandas.concat(uncorrelated_dfs)
+        uncorrelated_df.attrs = uncorrelated_dfs[0].attrs
+        return uncorrelated_df
 
 
 def get_plugin(*args):

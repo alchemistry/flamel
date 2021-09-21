@@ -18,7 +18,7 @@ def get_available_plugin_ids(type):
     if type == 'uncorrelate':
         return ['statistical_inefficiency_dhdl', 'statistical_inefficiency_dhdl_all']
     if type == 'output':
-        return ['simple', 'alchemical_analysis', 'text', 'pickle']
+        return ['simple', 'alchemical_analysis', 'pickle']
     if type == 'parser':
         return ['gmx']
 
