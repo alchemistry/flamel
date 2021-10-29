@@ -1,12 +1,14 @@
 # Flamel
 
-The aim of the project is to develop a foundation for a new version of [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis)
-that uses the well tested [alchemlyb](https://github.com/alchemistry/alchemlyb) library. It is supposed to become [the successor of alchemical-analysis](https://github.com/alchemistry/alchemlyb/wiki/Roadmap#librarify-alchemical-analysis-functionality)].
+The aim of the project is to develop a **command line interface (CLI) to [alchemlyb](https://github.com/alchemistry/alchemlyb)**, the well-tested and actively developed library for alchemical free energy calculations. 
+It is supposed to [become the successor](https://github.com/alchemistry/alchemlyb/wiki/Roadmap#librarify-alchemical-analysis-functionality) of the now unsupported [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis) script.
 
 ----
 
-This project is currently dormant due to lack of developers. If you are **interested in contributing** please raise issues/open pull requests and ping [@orbeckst](https://github.com/orbeckst) and [@xiki-tempula](https://github.com/xiki-tempula) to get our attention. 
+This project is currently *dormant* due to lack of developers. If you are **interested in contributing** please raise issues/open pull requests and ping [@orbeckst](https://github.com/orbeckst) and [@xiki-tempula](https://github.com/xiki-tempula) to get our attention. 
 We are happy to see new contributors!
+
+Please read the [proposed future directions](https://github.com/alchemistry/flamel/issues/8#issuecomment-925440213), which form the informal roadmap for developments as discussed in [discussion #159](https://github.com/alchemistry/alchemlyb/discussions/159).
 
 ----
 
@@ -14,9 +16,7 @@ We are happy to see new contributors!
 # Installation
 1. Download and install alchemlyb
 ```shell
-git clone git@github.com:alchemistry/alchemlyb.git
-cd alchemlyb
-pip install .
+pip install alchemlyb
 ```
 2. Download flamel
 ```shell
