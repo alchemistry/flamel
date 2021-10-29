@@ -8,7 +8,7 @@ It is supposed to [become the successor](https://github.com/alchemistry/alchemly
 This project is currently *dormant* due to lack of developers. If you are **interested in contributing** please raise issues/open pull requests and ping [@orbeckst](https://github.com/orbeckst) and [@xiki-tempula](https://github.com/xiki-tempula) to get our attention. 
 We are happy to see new contributors!
 
-Please read the [proposed future directions](https://github.com/alchemistry/flamel/issues/8#issuecomment-925440213), which form the informal roadmap for developments as discussed in [discussion #159](https://github.com/alchemistry/alchemlyb/discussions/159).
+Please read the [proposed future directions](https://github.com/alchemistry/alchemlyb/discussions/159#discussioncomment-1560486), which form the informal roadmap for developments.
 
 ----
 
