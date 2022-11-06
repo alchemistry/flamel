@@ -18,7 +18,7 @@ def get_available_plugin_ids(type):
     if type == 'uncorrelate':
         return ['statistical_inefficiency_dhdl', 'statistical_inefficiency_dhdl_all']
     if type == 'output':
-        return ['simple', 'alchemical_analysis']
+        return ['simple', 'alchemical_analysis', 'pickle']
     if type == 'parser':
         return ['gmx']
 
@@ -90,14 +90,18 @@ def load_plugins(type, selected, *args):
 
 
 def main():
+
     parser = argparse.ArgumentParser(description="""
                     Collect data and estimate free energy differences
                     """, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-t', '--temperature', dest='temperature', help="Temperature in K. Default: 298 K.", default=298.0, type=float)
     parser.add_argument('-p', '--prefix', dest='prefix', help='Prefix for datafile sets, i.e.\'dhdl\' (default).', default='dhdl')
+    parser.add_argument('-d', '--dir', dest = 'datafile_directory', help = 'Directory in which data files are stored. Default: Current directory.', default = '.')
     parser.add_argument('-q', '--suffix', dest='suffix', help='Suffix for datafile sets, i.e. \'xvg\' (default).', default='xvg')
     parser.add_argument('-e', dest='estimators', type=str, default=None, help="Comma separated Estimator methods")
     parser.add_argument('-n', '--uncorr', dest='uncorr', help='The observable to be used for the autocorrelation analysis; either \'dhdl_all\' (obtained as a sum over all energy components) or \'dhdl\' (obtained as a sum over those energy components that are changing; default) or \'dE\'. In the latter case the energy differences dE_{i,i+1} (dE_{i,i-1} for the last lambda) are used.', default='dhdl')
+    parser.add_argument('-j', '--resultfilename', dest = 'resultfilename', help = 'custom defined result filename prefix. Default: results', default = 'results')
+    parser.add_argument('-u', '--unit', dest = 'unit', help = 'Unit to report energies: \'kJ\', \'kcal\', and \'kT\'. Default: \'kJ\'', default = 'kJ')
     parser.add_argument('-r', '--decimal', dest='decimal', help='The number of decimal places the free energies are to be reported with. No worries, this is for the text output only; the full-precision data will be stored in \'results.pickle\'. Default: 3.', default=3, type=int)
     parser.add_argument('-o', '--output', dest='output', type=str, default=None, help="Output methods")
     parser.add_argument('-a', '--software', dest='software', help='Package\'s name the data files come from: Gromacs, Sire, Desmond, or AMBER. Default: Gromacs.', default='Gromacs')
@@ -122,9 +126,9 @@ def main():
     dhdls = None
     u_nks = None
     if do_dhdl:
-        dhdls = parser.get_dhdls()
+        dhdls = parser.get_dhdls(args)
     if do_u_nks:
-        u_nks = parser.get_u_nks()
+        u_nks = parser.get_u_nks(args)
 
     # Step 2: Uncorrelate the data
     if uncorrelator.needs_dhdls:

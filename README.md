@@ -26,8 +26,9 @@ git clone git@github.com:alchemistry/flamel.git
 # Usage
 Currently only Gromacs parser and uncorrelation by dH/dl is supported!
 ```
-usage: flamel.py [-h] [-t TEMPERATURE] [-p PREFIX] [-q SUFFIX] [-e ESTIMATORS]
-                 [-n UNCORR] [-r DECIMAL] [-o OUTPUT] [-a SOFTWARE]
+usage: flamel.py [-h] [-t TEMPERATURE] [-p PREFIX] [-d DATAFILE_DIRECTORY]
+                 [-q SUFFIX] [-e ESTIMATORS] [-n UNCORR] [-j RESULTFILENAME]
+                 [-u UNIT] [-r DECIMAL] [-o OUTPUT] [-a SOFTWARE]
                  [-s EQUILTIME]
 
 Collect data and estimate free energy differences
@@ -39,6 +40,9 @@ optional arguments:
   -p PREFIX, --prefix PREFIX
                         Prefix for datafile sets, i.e.'dhdl' (default).
                         (default: dhdl)
+  -d DATAFILE_DIRECTORY, --dir DATAFILE_DIRECTORY
+                        Directory in which data files are stored. Default:
+                        Current directory. (default: .)
   -q SUFFIX, --suffix SUFFIX
                         Suffix for datafile sets, i.e. 'xvg' (default).
                         (default: xvg)
@@ -51,6 +55,11 @@ optional arguments:
                         default) or 'dE'. In the latter case the energy
                         differences dE_{i,i+1} (dE_{i,i-1} for the last
                         lambda) are used. (default: dhdl)
+  -j RESULTFILENAME, --resultfilename RESULTFILENAME
+                        custom defined result filename prefix. Default:
+                        results (default: results)
+  -u UNIT, --unit UNIT  Unit to report energies: 'kJ', 'kcal', and 'kT'.
+                        Default: 'kJ' (default: kJ)
   -r DECIMAL, --decimal DECIMAL
                         The number of decimal places the free energies are to
                         be reported with. No worries, this is for the text
@@ -75,19 +84,42 @@ flamel.py -p lambda_
 
 You should get a similar overview as [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis).
 
+You also get a text file `results.txt` with the state overview, as well as a pickle file `results.pickle` with full precision values as well as complementary information about the analysis. 
+
+Example:
+```
+>>> import pandas as pd
+>>> data = pd.read_pickle('results.pickle')
+>>> data.
+data.dF                  data.datafile_directory  data.decimal             data.estimators          data.prefix              data.software            data.temperature         data.unit
+data.dFs                 data.ddFs                data.equiltime           data.output              data.resultfilename      data.suffix              data.uncorr              data.when_analyzed
+>>> data.when_analyzed
+'Wed Nov 11 15:22:32 2020'
+>>> data.equiltime
+0
+>>> data.software
+'Gromacs'
+>>> data.dF['TI']
+{'coul-lambda': (-15.633404527627823, 0.03466623342555742), 'vdw-lambda': (3.8237866774171514, 0.02952686840637163), 'total': (-11.809617850210671, 0.04553661930581169)}
+>>> data.dF['MBAR']['coul-lambda']
+(-15.617280704605726, 0.03241377327730135)
+>>> 
+```
+
 # How it works
 - Step 1: Read the necessary data
 - Step 2: Uncorrelate the data
 - Step 3: Estimate Free energy differences
 - Step 4: Output
 
-Each step is performed in Plugins which can easyly be be replaced by other plugins. 
+Each step is performed in Plugins which can easily be replaced by other plugins. 
 
 # Name
 In the tradition to associate free energy estimations with alchemistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
 
 # State of development:
-Eventhoug alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
+
+Even though alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
 
 In fact for TI, BAR, MBAR you should get exactly the same results:
 
@@ -119,8 +151,12 @@ Alchemical Analysis with the same input files:
     TOTAL:      -29.154  +-  0.241    -29.067  +-  0.170    -29.074  +-  0.220
 ```
 
-# Planed features:
-- **Output of statistical inefficiencies**
-alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
-- **Uncorrelation threshold**
-In alchemical-analysis it is possible to specify a threshold for the number of samples to keep in the uncorrelation process.
+# Planned features
+- [ ] **plotting** 
+  Add support for plotting the dHdls of states and the BAR/MBAR overlap matrix (preliminary feature in alchemlyb).
+- [x] **pickle and txt output**
+  alchemical-analysis outputs the simple result table as a text file as well as the full precision calculations as a numpy-compatible pickle file.
+- [ ] **Output of statistical inefficiencies**
+  alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
+- [ ] **Uncorrelation threshold**
+  In alchemical-analysis it is possible to specify a threshold for the number of samples to keep in the uncorrelation process.

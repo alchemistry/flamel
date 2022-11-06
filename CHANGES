@@ -14,6 +14,20 @@ The rules for this file:
 
 ------------------------------------------------------------------------------
 
+2021-09-21  hejamu, schlaicha
+
+  * 0.2.0
+
+Enhancements
+
+- pickle output
+
+
+Fixes
+
+- corrected unit handling
+- reading of GROMACS input files
+
 
 2018-11-26  harlor
 

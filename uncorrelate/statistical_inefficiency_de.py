@@ -33,7 +33,9 @@ class StatisticalInefficiencyUnks:
             statinefs.append(statinef)
             i += 1
 
-        return pandas.concat(uncorrelated_dfs)
+        uncorrelated_df = pandas.concat(uncorrelated_dfs)
+        uncorrelated_df.attrs = uncorrelated_dfs[0].attrs
+        return uncorrelated_df
 
 
 def get_plugin(*args):
