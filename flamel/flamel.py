@@ -4,6 +4,7 @@ import argparse
 import logging
 import pathlib
 import pickle
+import sys
 
 from alchemlyb.workflows import ABFE
 
@@ -87,7 +88,7 @@ def main():
                       help='Print out and plot the overlap matrix. Default: True.',
                       default=True, action='store_true')
 
-    args = parser.parse_args()
+    args = parser.parse_args(sys.argv[1:])
 
     # Print the logging to the console
     if args.verbose:
