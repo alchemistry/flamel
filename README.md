@@ -1,8 +1,8 @@
 flamel
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/flamel/workflows/CI/badge.svg)](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/flamel/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/flamel/branch/main/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/flamel/branch/main)
+[![GitHub Actions Build Status](https://github.com/alchemistry/flamel/workflows/CI/badge.svg)](https://github.com/alchemistry/flamel/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/alchemistry/flamel/branch/main/graph/badge.svg)](https://codecov.io/gh/alchemistry/flamel/branch/main)
 
 
 The aim of the project is to develop a **command line interface (CLI) to 
