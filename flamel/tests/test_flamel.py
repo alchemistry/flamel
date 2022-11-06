@@ -40,7 +40,7 @@ class TestFlamel():
 
     def test_result_p(self, setup):
         df = pickle.load(open(setup / 'result.p', 'rb'))
-        assert_approx_equal(df['MBAR']['Stages']['TOTAL'], 1.8)
+        assert_approx_equal(df['MBAR']['Stages']['TOTAL'], 1.8, significant=1)
 
     def test_dF_state_long(self, setup):
         assert (setup / 'dF_state_long.pdf').exists()
