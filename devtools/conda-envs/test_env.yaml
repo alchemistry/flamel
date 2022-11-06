@@ -7,15 +7,11 @@ dependencies:
   - pip
 
   - "alchemlyb>=1.0"
-  - alchemtest
 
     # Testing
   - pytest
   - pytest-cov
   - pytest-mock
-  - codecov
 
-    # Pip-only installs
-  #- pip:
-  #  - codecov
-
+  - pip:
+    - alchemtest
