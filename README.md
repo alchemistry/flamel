@@ -1,4 +1,4 @@
-flamel
+Flamel
 ==============================
 [//]: # (Badges)
 [![GitHub Actions Build Status](https://github.com/alchemistry/flamel/workflows/CI/badge.svg)](https://github.com/alchemistry/flamel/actions?query=workflow%3ACI)
@@ -28,72 +28,28 @@ The analysis could be invoked with the following command
 flamel -a GROMACS -d dhdl_data -f 10 -g -i 50 -j result.csv -m TI,BAR,MBAR -n dE -o out_data -p dhdl -q xvg -r 3 -s 50 -t 298 -v  -w
 ```
 
-Currently only GROMACS and AMBER parser are supported!
-```
-usage: flamel [-h] [-a SOFTWARE] [-d DATAFILE_DIRECTORY] [-f BFORWREV] [-g] 
-              [-i UNCORR_THRESHOLD] [-j RESULTFILENAME] [-m METHODS] 
-              [-n UNCORR] [-o OUTPUT_DIRECTORY] [-p PREFIX] [-q SUFFIX] 
-              [-r DECIMAL] [-s EQUILTIME] [-t TEMPERATURE] [-u UNITS] [-v] [-w]
+Run ``flamel -h`` to see the full description of the options.
 
-Collect data and estimate free energy differences
+# Output
+This script si a warpper around the 
+[ABFE](https://alchemlyb.readthedocs.io/en/latest/workflows/alchemlyb.workflows.ABFE.html#alchemlyb.workflows.ABFE) 
+workflow in [alchemlyb](https://github.com/alchemistry/alchemlyb). 
+The script will generate the output from ABFE workflow, including 
+[O_MBAR.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#overlap-matrix-of-the-mbar),
+[dF_t.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#df-states-plots-between-different-estimators),
+[dF_state.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#overlap-matrix-of-the-mbar),
+[dF_t.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#forward-and-backward-convergence),
+[dhdl_TI.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#dhdl-plot-of-the-ti).
 
-options:
-  -h, --help            show this help message and exit
-  -a SOFTWARE, --software SOFTWARE
-                        Package's name the data files come from: Gromacs or 
-                        AMBER. Default: Gromacs.
-  -d DATAFILE_DIRECTORY, --dir DATAFILE_DIRECTORY
-                        Directory in which data files are stored. Default: 
-                        Current directory.
-  -f BFORWREV, --forwrev BFORWREV
-                        Plot the free energy change as a function of time in 
-                        both directions, with the specified number of points in
-                         the time plot. The number of time points (an integer) 
-                         must be provided. Default: 0.
-  -g, --breakdown       Plot the free energy differences evaluated for each 
-                        pair of adjacent states for all methods, including the 
-                        dH/dlambda curve for TI. Default: True.
-  -i UNCORR_THRESHOLD, --threshold UNCORR_THRESHOLD
-                        Proceed with correlated samples if the number of 
-                        uncorrelated samples is found to be less than this 
-                        number. If 0 is given, the time series analysis will
-                        not be performed at all. Default: 50. 
-  -j RESULTFILENAME, --resultfilename RESULTFILENAME
-                        custom defined result filename prefix. Default: 
-                        results.csv
-  -m METHODS, --methods METHODS
-                        A comma separated list of the methods to estimate the 
-                        free energy with. Default: TI,BAR,MBAR. 
-  -n UNCORR, --uncorr UNCORR
-                        The observable to be used for the autocorrelation 
-                        analysis; either 'all' (obtained as a sum over all 
-                        energy components) or 'dE'. In the latter case the
-                        energy differences dE_{i,i+1} (dE_{i,i-1} for the last 
-                        lambda) are used. (default: dE)
-  -o OUTPUT_DIRECTORY, --out OUTPUT_DIRECTORY
-                        Directory in which the output files produced by this 
-                        script will be stored. Default: Same as 
-                        datafile_directory.
-  -p PREFIX, --prefix PREFIX
-                        Prefix for datafile sets, i.e.'dhdl' (default).
-  -q SUFFIX, --suffix SUFFIX
-                        Suffix for datafile sets, i.e. 'xvg' (default).
-  -r DECIMAL, --decimal DECIMAL
-                        The number of decimal places the free energies are to 
-                        be reported with. No worries, this is for the text 
-                        output only; the full-precision data will be stored in 
-                        'results.pickle'. Default: 3.
-  -s EQUILTIME, --skiptime EQUILTIME
-                        Discard data prior to this specified time as 
-                        'equilibration' data. Units picoseconds. Default: 0 ps.
-  -t TEMPERATURE, --temperature TEMPERATURE
-                        Temperature in K. Default: 298 K. 
-  -u UNITS, --units UNITS
-                        Units to report energies: 'kJ/mol', 'kcal/mol', and 
-                        'kT'. Default: 'kcal/mol'
-  -v, --verbose         Verbose option. Default: False. 
-  -w, --overlap         Print out and plot the overlap matrix. Default: True.
-```
+The script will also generate the `result.csv` ::
+
+                      TI  TI_Error    BAR  BAR_Error   MBAR  MBAR_Error
+    States 0 -- 1  0.962     0.007  0.956      0.007  0.964       0.006
+           1 -- 2  0.567     0.006  0.558      0.006  0.558       0.004
+           2 -- 3  0.264     0.005  0.258      0.005  0.254       0.004
+           3 -- 4  0.035     0.004  0.035      0.004  0.030       0.003
+    Stages fep     1.828     0.014  1.806      0.016  1.807       0.014
+           TOTAL   1.828     0.014  1.806      0.011  1.807       0.014
 
 # Name
 In the tradition to associate free energy estimations with alchemistry it's 
