@@ -1,0 +1,22 @@
+name: test
+channels:
+
+  - conda-forge
+
+  - defaults
+dependencies:
+    # Base depends
+  - python
+  - pip
+
+  - alchemlyb>=1.0
+
+    # Testing
+  - pytest
+  - pytest-cov
+  - codecov
+
+    # Pip-only installs
+  #- pip:
+  #  - codecov
+

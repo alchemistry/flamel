@@ -1,126 +1,110 @@
-# Flamel
+flamel
+==============================
+[//]: # (Badges)
+[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/flamel/workflows/CI/badge.svg)](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/flamel/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/flamel/branch/main/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/flamel/branch/main)
 
-The aim of the project is to develop a **command line interface (CLI) to [alchemlyb](https://github.com/alchemistry/alchemlyb)**, the well-tested and actively developed library for alchemical free energy calculations. 
-It is supposed to [become the successor](https://github.com/alchemistry/alchemlyb/wiki/Roadmap#librarify-alchemical-analysis-functionality) of the now unsupported [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis) script.
 
-----
-
-This project is currently *dormant* due to lack of developers. If you are **interested in contributing** please raise issues/open pull requests and ping [@orbeckst](https://github.com/orbeckst) and [@xiki-tempula](https://github.com/xiki-tempula) to get our attention. 
-We are happy to see new contributors!
-
-Please read the [proposed future directions](https://github.com/alchemistry/alchemlyb/discussions/159#discussioncomment-1560486), which form the informal roadmap for developments.
-
-----
-
+The aim of the project is to develop a **command line interface (CLI) to 
+[alchemlyb](https://github.com/alchemistry/alchemlyb)**, the well-tested and 
+actively developed library for alchemical free energy calculations. It is 
+supposed to [become the successor](https://github.com/alchemistry/alchemlyb/wiki/Roadmap#librarify-alchemical-analysis-functionality) 
+of the now unsupported [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis) script.
 
 # Installation
-1. Download and install alchemlyb
-```shell
-pip install alchemlyb
-```
-2. Download flamel
+
+Clone flamel and install
 ```shell
 git clone git@github.com:alchemistry/flamel.git
+cd flamel
+pip install .
 ```
 
 # Usage
-Currently only Gromacs parser and uncorrelation by dH/dl is supported!
+
+The analysis could be invoked with the following command
+
+```shell
+flamel -a GROMACS -d dhdl_data -f 10 -g -i 50 -j result.csv -m TI,BAR,MBAR -n dE -o out_data -p dhdl -q xvg -r 3 -s 50 -t 298 -v  -w
 ```
-usage: flamel.py [-h] [-t TEMPERATURE] [-p PREFIX] [-q SUFFIX] [-e ESTIMATORS]
-                 [-n UNCORR] [-r DECIMAL] [-o OUTPUT] [-a SOFTWARE]
-                 [-s EQUILTIME]
+
+Currently only GROMACS and AMBER parser are supported!
+```
+usage: flamel [-h] [-a SOFTWARE] [-d DATAFILE_DIRECTORY] [-f BFORWREV] [-g] 
+              [-i UNCORR_THRESHOLD] [-j RESULTFILENAME] [-m METHODS] 
+              [-n UNCORR] [-o OUTPUT_DIRECTORY] [-p PREFIX] [-q SUFFIX] 
+              [-r DECIMAL] [-s EQUILTIME] [-t TEMPERATURE] [-u UNITS] [-v] [-w]
 
 Collect data and estimate free energy differences
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
-  -t TEMPERATURE, --temperature TEMPERATURE
-                        Temperature in K. Default: 298 K. (default: 298.0)
+  -a SOFTWARE, --software SOFTWARE
+                        Package's name the data files come from: Gromacs or 
+                        AMBER. Default: Gromacs.
+  -d DATAFILE_DIRECTORY, --dir DATAFILE_DIRECTORY
+                        Directory in which data files are stored. Default: 
+                        Current directory.
+  -f BFORWREV, --forwrev BFORWREV
+                        Plot the free energy change as a function of time in 
+                        both directions, with the specified number of points in
+                         the time plot. The number of time points (an integer) 
+                         must be provided. Default: 0.
+  -g, --breakdown       Plot the free energy differences evaluated for each 
+                        pair of adjacent states for all methods, including the 
+                        dH/dlambda curve for TI. Default: True.
+  -i UNCORR_THRESHOLD, --threshold UNCORR_THRESHOLD
+                        Proceed with correlated samples if the number of 
+                        uncorrelated samples is found to be less than this 
+                        number. If 0 is given, the time series analysis will
+                        not be performed at all. Default: 50. 
+  -j RESULTFILENAME, --resultfilename RESULTFILENAME
+                        custom defined result filename prefix. Default: 
+                        results.csv
+  -m METHODS, --methods METHODS
+                        A comma separated list of the methods to estimate the 
+                        free energy with. Default: TI,BAR,MBAR. 
+  -n UNCORR, --uncorr UNCORR
+                        The observable to be used for the autocorrelation 
+                        analysis; either 'all' (obtained as a sum over all 
+                        energy components) or 'dE'. In the latter case the
+                        energy differences dE_{i,i+1} (dE_{i,i-1} for the last 
+                        lambda) are used. (default: dE)
+  -o OUTPUT_DIRECTORY, --out OUTPUT_DIRECTORY
+                        Directory in which the output files produced by this 
+                        script will be stored. Default: Same as 
+                        datafile_directory.
   -p PREFIX, --prefix PREFIX
                         Prefix for datafile sets, i.e.'dhdl' (default).
-                        (default: dhdl)
   -q SUFFIX, --suffix SUFFIX
                         Suffix for datafile sets, i.e. 'xvg' (default).
-                        (default: xvg)
-  -e ESTIMATORS         Comma separated Estimator methods (default: None)
-  -n UNCORR, --uncorr UNCORR
-                        The observable to be used for the autocorrelation
-                        analysis; either 'dhdl_all' (obtained as a sum over
-                        all energy components) or 'dhdl' (obtained as a sum
-                        over those energy components that are changing;
-                        default) or 'dE'. In the latter case the energy
-                        differences dE_{i,i+1} (dE_{i,i-1} for the last
-                        lambda) are used. (default: dhdl)
   -r DECIMAL, --decimal DECIMAL
-                        The number of decimal places the free energies are to
-                        be reported with. No worries, this is for the text
-                        output only; the full-precision data will be stored in
-                        'results.pickle'. Default: 3. (default: 3)
-  -o OUTPUT, --output OUTPUT
-                        Output methods (default: None)
-  -a SOFTWARE, --software SOFTWARE
-                        Package's name the data files come from: Gromacs,
-                        Sire, Desmond, or AMBER. Default: Gromacs. (default:
-                        Gromacs)
+                        The number of decimal places the free energies are to 
+                        be reported with. No worries, this is for the text 
+                        output only; the full-precision data will be stored in 
+                        'results.pickle'. Default: 3.
   -s EQUILTIME, --skiptime EQUILTIME
-                        Discard data prior to this specified time as
-                        'equilibration' data. Units picoseconds. Default: 0
-                        ps. (default: 0)
+                        Discard data prior to this specified time as 
+                        'equilibration' data. Units picoseconds. Default: 0 ps.
+  -t TEMPERATURE, --temperature TEMPERATURE
+                        Temperature in K. Default: 298 K. 
+  -u UNITS, --units UNITS
+                        Units to report energies: 'kJ/mol', 'kcal/mol', and 
+                        'kT'. Default: 'kcal/mol'
+  -v, --verbose         Verbose option. Default: False. 
+  -w, --overlap         Print out and plot the overlap matrix. Default: True.
 ```
-
-To read enumerated xvg files lambda_0.xvg, lambda_1.xvg, ... use: 
-```shell
-flamel.py -p lambda_
-```
-
-You should get a similar overview as [alchemical-analysis](https://github.com/MobleyLab/alchemical-analysis).
-
-# How it works
-- Step 1: Read the necessary data
-- Step 2: Uncorrelate the data
-- Step 3: Estimate Free energy differences
-- Step 4: Output
-
-Each step is performed in Plugins which can easyly be be replaced by other plugins. 
 
 # Name
-In the tradition to associate free energy estimations with alchemistry it's named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
+In the tradition to associate free energy estimations with alchemistry it's 
+named after: [Nicolas Flamel](https://en.wikipedia.org/wiki/Nicolas_Flamel)
 
-# State of development:
-Eventhoug alchemical-analysis is not fully covered by Flamel, it can already reproduce some results calculated using alchemical-analysis:
+### Copyright
 
-In fact for TI, BAR, MBAR you should get exactly the same results:
+Copyright (c) 2022, alchemistry
 
-Example Flamel output for the [water_particle/without_energy](https://github.com/alchemistry/alchemtest/tree/master/src/alchemtest/gmx/water_particle/without_energy) dataset:
-``` 
------------- --------------------- --------------------- --------------------- 
-   States           TI (kJ/mol)          BAR (kJ/mol)         MBAR (kJ/mol)    
------------- --------------------- --------------------- --------------------- 
-   0 -- 1         0.074  +-  0.005      0.073  +-  0.005      0.071  +-  0.003 
-...
-  36 -- 37       -5.472  +-  0.038     -5.475  +-  0.038     -5.457  +-  0.028 
------------- --------------------- --------------------- --------------------- 
-     coul:      -41.067  +-  0.129    -41.022  +-  nan      -41.096  +-  0.170 
-      vdw:       11.912  +-  0.113     11.954  +-  nan       12.022  +-  0.142 
-    TOTAL:      -29.154  +-  0.172    -29.067  +-  nan      -29.074  +-  0.220 
-```
 
-Alchemical Analysis with the same input files:
-```
------------- --------------------- --------------------- --------------------- 
-   States           TI (kJ/mol)          BAR (kJ/mol)         MBAR (kJ/mol)    
------------- --------------------- --------------------- --------------------- 
-   0 -- 1         0.074  +-  0.005      0.073  +-  0.005      0.071  +-  0.003 
-...
-  36 -- 37       -5.472  +-  0.038     -5.475  +-  0.038     -5.457  +-  0.028 
------------- --------------------- --------------------- --------------------- 
-  Coulomb:      -41.067  +-  0.180    -41.022  +-  0.129    -41.096  +-  0.170 
-  vdWaals:       11.912  +-  0.160     11.954  +-  0.111     12.022  +-  0.139 
-    TOTAL:      -29.154  +-  0.241    -29.067  +-  0.170    -29.074  +-  0.220
-```
-
-# Planed features:
-- **Output of statistical inefficiencies**
-alchemical-analysis offers information about the statistical inefficiencies of the input datasets.
-- **Uncorrelation threshold**
-In alchemical-analysis it is possible to specify a threshold for the number of samples to keep in the uncorrelation process.
+#### Acknowledgements
+ 
+Project based on the 
+[Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.1.
