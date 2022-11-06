@@ -2,7 +2,7 @@
 
 [//]: # (Badges)
 [![GitHub Actions Build Status](https://github.com/alchemistry/flamel/workflows/CI/badge.svg)](https://github.com/alchemistry/flamel/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/alchemistry/flamel/branch/main/graph/badge.svg)](https://codecov.io/gh/alchemistry/flamel/branch/main)
+[![codecov](https://codecov.io/gh/alchemistry/flamel/branch/main/graph/badge.svg)](https://codecov.io/gh/alchemistry/flamel/branch/master)
 
 
 The aim of the project is to develop a **command line interface (CLI) to 
