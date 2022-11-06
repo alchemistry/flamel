@@ -1,0 +1,29 @@
+# -*- tab-width: 2; indent-tabs-mode: nil; coding: utf-8 -*-
+====================
+ flamel CHANGELOG
+=====================
+
+The rules for this file:
+  * entries are sorted newest-first.
+  * summarize sets of changes - don't reproduce every git log comment here.
+  * don't ever delete anything.
+  * keep the format consistent (79 char width, ISO 8601 date format
+    YYYY-MM-DD) and do not use tabs but use spaces for formatting    
+  * accompany each entry with github issue/PR number (Issue #xyz)
+  * release numbers follow "Semantic Versioning" https://semver.org
+
+------------------------------------------------------------------------------
+
+
+2018-11-26  harlor
+
+  * 0.1.0
+
+First release (actual release day: 2022-11-06, using @harlor's
+original code dating back to 2018).
+
+Features
+
+- plugin-based system
+- currently only Gromacs parser and uncorrelation by dH/dl is supported
+- reproduces TI, BAR, and MBAR results from alchemical-analysis.py
