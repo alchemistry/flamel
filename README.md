@@ -41,7 +41,8 @@ The script will generate the output from ABFE workflow, including
 [dF_t.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#forward-and-backward-convergence),
 [dhdl_TI.pdf](https://alchemlyb.readthedocs.io/en/latest/visualisation.html#dhdl-plot-of-the-ti).
 
-The script will also generate the `result.csv` ::
+The script will also generate the `result.csv` and `result.p`, which is a 
+pandas DataFrame summarising the results. ::
 
                       TI  TI_Error    BAR  BAR_Error   MBAR  MBAR_Error
     States 0 -- 1  0.962     0.007  0.956      0.007  0.964       0.006

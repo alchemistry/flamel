@@ -5,11 +5,9 @@ on:
   # The cookiecutter uses the "--initial-branch" flag when it runs git-init
   push:
     branches:
-      - "main"
       - "master"
   pull_request:
     branches:
-      - "main"
       - "master"
   schedule:
     # Weekly tests run on main by default:
