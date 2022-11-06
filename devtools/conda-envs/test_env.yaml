@@ -1,15 +1,12 @@
 name: test
 channels:
-
   - conda-forge
-
-  - defaults
 dependencies:
     # Base depends
   - python
   - pip
 
-  - alchemlyb>=1.0
+  - "alchemlyb>=1.0"
   - alchemtest
 
     # Testing
