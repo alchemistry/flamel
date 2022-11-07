@@ -13,12 +13,35 @@ of the now unsupported [alchemical-analysis](https://github.com/MobleyLab/alchem
 
 ## Installation
 
-Clone flamel and install
+The package containing `flamel` is called **alchemistry-flamel**. The
+latest release can be installed with `pip` or alternatively, install
+from source. Both methods are explained below.
+
+### `pip`
+*flamel* is available from the Python Package index (PyPi) under the
+name **alchemistry-flamel** and can be installed with
+```shell
+pip install alchemistry-flamel
+```
+The installed package makes the `flamel` script available.
+
+
+### From sources
+Clone the *flamel* repository https://github.com/alchemistry/flamel
+and install with `pip`
 ```shell
 git clone git@github.com:alchemistry/flamel.git
-cd flamel
-pip install .
+pip install flamel/
 ```
+
+### Uninstalling
+If you want to remove *flamel* after having it installed with `pip`,
+run
+```shell
+pip uninstall alchemistry-flamel
+```
+to delete `flamel` and its associated files.
+
 
 ## Usage
 
