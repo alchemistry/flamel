@@ -15,20 +15,34 @@ authors = [
 license = { text = "BSD-3-Clause" }
 # See https://pypi.org/classifiers/
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows ",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Chemistry",    
 ]
 requires-python = ">=3.8"
 # Declare any run-time dependencies that should be installed with the package.
 dependencies = [
-   "importlib-resources;python_version<'3.10'",
+   "importlib-resources;python_version<'3.12'",
    "alchemlyb>=1.0"
 ]
 
 # Update the urls once the hosting is set up.
-#[project.urls]
-#"Source" = "https://github.com/<username>/flamel/"
+[project.urls]
+"Source" = "https://github.com/alchemistry/flamel/"
 #"Documentation" = "https://flamel.readthedocs.io/"
+"Documentation" = "https://github.com/alchemistry/flamel/blob/master/README.md"
 
 [project.scripts]
 flamel = "flamel.flamel:main"
@@ -36,7 +50,8 @@ flamel = "flamel.flamel:main"
 [project.optional-dependencies]
 test = [
   "pytest>=6.1.2",
-  "pytest-runner"
+  "pytest-runner",
+  "pytest-mock",
 ]
 
 [tool.setuptools]
