@@ -14,7 +14,7 @@ The rules for this file:
 
 ------------------------------------------------------------------------------
 
-2022-11-07  xiki-tempula, orbeckst
+2022-11-09  xiki-tempula, orbeckst
 
   * 0.3.0
 
@@ -31,6 +31,7 @@ Enhancements
 
 - plotting output from ABFE workflow (issue #7)
 - pip installable (issue #3)
+- supports Python 3.11
 
 
 2021-09-21  hejamu, schlaicha
