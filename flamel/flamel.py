@@ -24,7 +24,7 @@ def main():
                              'time in both directions, with the specified '
                              'number of points in the time plot. The number '
                              'of time points (an integer) must be provided. '
-                             'Default: 0', default=0, type=int)
+                             'Default: 10', default=10, type=int)
     parser.add_argument('-g', '--breakdown', dest='breakdown',
                         help='Plot the free energy differences evaluated for '
                              'each pair of adjacent states for all methods, '
