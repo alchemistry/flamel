@@ -65,7 +65,7 @@ jobs:
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
-          pytest -v --cov=flamel --cov-report=xml --color=yes flamel/tests/
+          pytest -v --black --cov=flamel --cov-report=xml --color=yes flamel/tests/
         env:
           MPLBACKEND: agg
 

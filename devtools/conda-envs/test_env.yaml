@@ -12,6 +12,7 @@ dependencies:
   - pytest
   - pytest-cov
   - pytest-mock
+  - pytest-black
 
   - pip:
     - alchemtest
