@@ -23,7 +23,7 @@ class TestFlamel:
         in_path = pathlib.Path(load_benzene().data["Coulomb"][0]).parents[1]
         session_mocker.patch(
             "sys.argv",
-            new=f"flamel -a GROMACS -d {in_path} -f 10 -g -i 50 -j result.csv -m TI,BAR,MBAR -n dE -o {out} -p dhdl -q xvg.bz2 -r 3 -s 50 -t 298 -v -w".split(
+            new=f"flamel -a GROMACS -d {in_path} -o {out} -p dhdl -q xvg.bz2".split(
                 " "
             ),
         )
@@ -55,7 +55,7 @@ class TestFlamelOptions(TestFlamel):
         in_path = pathlib.Path(load_benzene().data["Coulomb"][0]).parents[1]
         session_mocker.patch(
             "sys.argv",
-            new=f"flamel -a GROMACS -d {in_path} -o {out} -p dhdl -q xvg.bz2".split(
+            new=f"flamel -a GROMACS -d {in_path} -f 10 -g -i 50 -j result.csv -m TI,BAR,MBAR -n dE -o {out} -p dhdl -q xvg.bz2 -r 3 -s 50 -t 298 -v -w".split(
                 " "
             ),
         )
