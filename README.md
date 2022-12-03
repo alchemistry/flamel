@@ -55,7 +55,7 @@ Run ``flamel -h`` to see the full description of the options.
 
 ## Output
 
-This script si a warpper around the 
+This script is a wrapper around the 
 [ABFE](https://alchemlyb.readthedocs.io/en/latest/workflows/alchemlyb.workflows.ABFE.html#alchemlyb.workflows.ABFE) 
 workflow in [alchemlyb](https://github.com/alchemistry/alchemlyb). 
 The script will generate the output from ABFE workflow, including 
