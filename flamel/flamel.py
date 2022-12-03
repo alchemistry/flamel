@@ -184,6 +184,10 @@ def main():
     else:
         overlap = ""
 
+    if args.forwrev > 0:
+        forwrev = args.forwrev
+    else:
+        forwrev = None
     workflow = ABFE(
         T=args.temperature,
         units=args.units,
@@ -200,7 +204,7 @@ def main():
         estimators=args.methods.split(","),
         overlap=overlap,
         breakdown=args.breakdown,
-        forwrev=args.forwrev,
+        forwrev=forwrev,
     )
     summary = workflow.summary
     pickle.dump(summary, open(pathlib.Path(out) / "result.p", "wb"))

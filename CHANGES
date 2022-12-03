@@ -14,6 +14,14 @@ The rules for this file:
 
 ------------------------------------------------------------------------------
 
+2022-xx-xx  xiki-tempula, hejamu
+
+  * 0.3.1
+
+ Fixes
+
+- Handle 0 as input to the forwrev (Issue #18/ PR #20).
+
 2022-11-09  xiki-tempula, orbeckst
 
   * 0.3.0
