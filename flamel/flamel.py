@@ -173,7 +173,10 @@ def main():
 
     # Print the logging to the console
     if args.verbose:
-        logging.getLogger().addHandler(logging.StreamHandler())
+        logging.basicConfig(
+            level=logging.INFO,
+            handlers=[logging.StreamHandler()],
+        )
 
     if args.output_directory == "":
         out = args.datafile_directory
