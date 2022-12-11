@@ -13,14 +13,23 @@ The rules for this file:
   * release numbers follow "Semantic Versioning" https://semver.org
 
 ------------------------------------------------------------------------------
+2022-??-??  xiki-tempula
+
+  * 0.3.2
+  
+Fixes
+
+- enable logger output for -v (issue #25)
+
 
 2022-12-06  xiki-tempula, hejamu
 
   * 0.3.1
 
- Fixes
+Fixes
 
 - Handle 0 as input to the forwrev (Issue #18/ PR #20).
+
 
 2022-11-09  xiki-tempula, orbeckst
 
