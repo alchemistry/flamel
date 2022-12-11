@@ -6,6 +6,7 @@ Unit and regression test for the flamel package.
 import sys
 import pathlib
 import pickle
+import subprocess
 
 import pytest
 from numpy.testing import assert_approx_equal
@@ -45,6 +46,17 @@ class TestFlamel:
 
     def test_dhdl_TI(self, setup):
         assert (setup / "dhdl_TI.pdf").exists()
+
+
+def test_verbose():
+    p = subprocess.Popen(
+        ["flamel", "-v"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    out, err = p.communicate()
+    assert (
+        "INFO:alchemlyb.workflows.ABFE:Initialise Alchemlyb ABFE Workflow"
+        in err.decode()
+    )
 
 
 class TestFlamelOptions(TestFlamel):
